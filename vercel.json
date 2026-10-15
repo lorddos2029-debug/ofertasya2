@@ -18,6 +18,14 @@
     {
       "source": "/checkout/",
       "destination": "/checkout.html"
+    },
+    {
+      "source": "/camera",
+      "destination": "/camera.html"
+    },
+    {
+      "source": "/camera/",
+      "destination": "/camera.html"
     }
   ],
   "headers": [

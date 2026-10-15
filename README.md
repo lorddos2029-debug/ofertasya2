@@ -25,4 +25,3 @@ Copie `.env.example` para `.env` e configure a credencial local. Abra http://loc
     npm run build
 
 Os testes usam respostas simuladas e não criam cobranças reais. O preço e o frete são calculados no servidor. O Pixel Purchase só dispara após confirmação e se o Pixel estiver instalado.
-
