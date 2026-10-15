@@ -10,3 +10,6 @@
 @media(max-width:800px){#buy{min-height:62px;width:100%;padding:18px 22px;background:#11151b;color:#fff;border:2px solid #11151b;border-radius:10px;font-size:16px;font-weight:800;letter-spacing:.7px;box-shadow:0 7px 18px #11151b30;margin:10px 0 18px;gap:14px}#buy span{font-size:23px;line-height:1}#buy:hover{background:#252c35}#buy:active{transform:translateY(1px);box-shadow:0 3px 9px #11151b25}}
 #buy{position:relative;justify-content:center;text-align:center}#buy span{position:absolute;right:22px}#buy{padding-left:48px;padding-right:48px}
 @media(max-width:800px){header nav{gap:16px;flex-wrap:wrap;font-size:10px}.purchase-notes{gap:16px}.purchase-notes>div{min-width:0}}
+
+.camera-review-grid{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.camera-review{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px}.camera-review h3{font-size:16px;margin:10px 0}.camera-review p{margin:0;color:var(--muted)}.review-stars{color:#946f20;letter-spacing:3px;font-size:19px}.review-average{display:block;font-size:36px;line-height:1.3;margin:18px 0 5px}.review-average small{font-size:17px;color:var(--muted)}@media(max-width:800px){.camera-review-grid{grid-template-columns:minmax(0,1fr)}.camera-review{padding:20px}}
+
