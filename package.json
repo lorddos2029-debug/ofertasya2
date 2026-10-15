@@ -1,0 +1,20 @@
+{
+  "name": "ofertasya",
+  "version": "1.0.0",
+  "description": "Ofertasya storefront and PIX checkout",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test payments.test.mjs",
+    "build": "node build.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

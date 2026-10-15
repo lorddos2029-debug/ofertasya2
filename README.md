@@ -1,24 +1,28 @@
 # Ofertasya
 
-Loja estática responsiva para o Bettdow Smartwatch com GPS e chamadas Bluetooth.
+Loja com checkout PIX, etapas de identificação/entrega/pagamento, CEP e fretes.
 
-## Executar localmente
+## Vercel
 
-Requer Node.js. Não há dependências para instalar.
+Importe este repositório com o preset **Other**, comando de build `npm run build` e diretório de saída `public` (também definidos em vercel.json).
 
-```sh
-node server.mjs
-```
+Em **Settings → Environment Variables**, crie `URUSPAY_API_KEY` com sua chave UrusPay, marque **Production** e **Preview**, e faça um novo deploy. Nunca inclua a chave no HTML, Git ou variáveis com prefixo público.
 
-Abra http://localhost:4180.
+`/api/health` informa a versão e se a variável está configurada, sem expor seu valor.
 
-## Arquivos
+As rotas `/api/charge`, `/api/status/*`, `/api/qr/*` e `/api/cep/*` são executadas pela função Node da Vercel. O build publica apenas HTML, CSS, JavaScript e imagens da loja. A consulta do PIX e o QR Code utilizam tokens criptografados, permitindo continuar após reinícios das funções sem depender do disco efêmero da Vercel. Preserve a chave enquanto houver PIX pendentes. Os tokens de consulta expiram após sete dias. O painel UrusPay mantém os pagamentos; esta versão não oferece um painel persistente de pedidos/endereço para expedição na Vercel.
 
-- `index.html`: página do produto, descrição e perguntas frequentes.
-- `assets/ofertasya/store.css`: identidade visual e layout responsivo.
-- `assets/ofertasya/store.js`: galeria, variantes, favoritos e sacola local.
-- `assets/ofertasya/watch-*.png`: imagens fornecidas do produto.
-- `assets/ofertasya/ofertasya-logo.png` e `.svg`: logo.
-- `checkout.html`: aviso sobre a integração de pagamento pendente.
+## Local
 
-A sacola e os favoritos são armazenados no navegador. Avaliações têm apenas prévia local. Pagamentos, pedidos e publicação de avaliações ainda precisam de backend. Os caminhos de assets partem da raiz do domínio.
+    npm ci
+    npm start
+
+Copie `.env.example` para `.env` e configure a credencial local. Abra http://localhost:4180.
+
+## Verificação
+
+    npm test
+    npm run build
+
+Os testes usam respostas simuladas e não criam cobranças reais. O preço e o frete são calculados no servidor. O Pixel Purchase só dispara após confirmação e se o Pixel estiver instalado.
+
