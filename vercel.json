@@ -26,6 +26,14 @@
     {
       "source": "/camera/",
       "destination": "/camera.html"
+    },
+    {
+      "source": "/capacete",
+      "destination": "/capacete.html"
+    },
+    {
+      "source": "/capacete/",
+      "destination": "/capacete.html"
     }
   ],
   "headers": [

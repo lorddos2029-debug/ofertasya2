@@ -1,4 +1,4 @@
-import {catalog,productFor,validItem} from './assets/ofertasya/catalog.mjs';
+import {catalog,productFor,validItem,pixUnitPrice} from './assets/ofertasya/catalog.mjs';
 import QRCode from 'qrcode';
 import {randomBytes,createHash,createCipheriv,createDecipheriv} from 'node:crypto';
 import fs from 'node:fs';
@@ -19,7 +19,7 @@ export function createPayments({key,root,fetcher=fetch,stateless=false}){
   const origin=req.headers.origin;if(origin&&origin!==`http://${req.headers.host}`&&origin!==`https://${req.headers.host}`)return send(403,{error:'Origem não autorizada.'});
   let b=req.body;if(!b||typeof b!=='object'){let raw='';for await(const chunk of req){raw+=chunk;if(raw.length>12000)return send(413,{error:'Dados excedem o limite.'})}try{b=JSON.parse(raw)}catch{return send(400,{error:'Dados inválidos.'})}}
   const nome=String(b.nome||'').trim(),email=String(b.email||'').trim(),cpf=String(b.cpf||'').replace(/\D/g,'');if(nome.length<5||nome.length>120||!nome.includes(' ')||! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254||!validCPF(cpf))return send(400,{error:'Confira o nome completo, e-mail e CPF.'});
-  if(!Array.isArray(b.itens)||!b.itens.length||b.itens.length>5)return send(400,{error:'Sua sacola está vazia ou inválida.'});let count=0,subtotal=0;const itens=b.itens.map(x=>{if(!validItem(x))throw Object.assign(Error('Produto, quantidade ou cor inválida.'),{status:400});const product=productFor(x);count+=x.quantity;subtotal+=product.price*x.quantity;return {id:product.id+'-'+x.color.toLowerCase(),nome:product.name+' — '+x.color,quantidade:x.quantity,preco_unitario:product.price/100}});if(count>99)return send(400,{error:'Limite de 99 unidades por pedido.'});
+  if(!Array.isArray(b.itens)||!b.itens.length||b.itens.length>5)return send(400,{error:'Sua sacola está vazia ou inválida.'});let count=0,subtotal=0;const itens=b.itens.map(x=>{if(!validItem(x))throw Object.assign(Error('Produto, quantidade ou cor inválida.'),{status:400});const product=productFor(x);count+=x.quantity;subtotal+=pixUnitPrice(x)*x.quantity;return {id:product.id+'-'+x.color.toLowerCase()+(x.size?'-'+x.size:''),nome:product.name+' — '+x.color+(x.size?' · Tamanho '+x.size:''),quantidade:x.quantity,preco_unitario:pixUnitPrice(x)/100}});if(count>99)return send(400,{error:'Limite de 99 unidades por pedido.'});
   const address=b.endereco,shipping=b.frete;if(!['free','sedex'].includes(shipping)||!address||!/^\d{8}$/.test(address.cep||'')||!['logradouro','numero','bairro','cidade','uf'].every(k=>typeof address[k]==='string'&&address[k].trim().length>0&&address[k].length<=150)||!/^([A-Z]{2})$/.test(address.uf))return send(400,{error:'Confira o endereço de entrega e selecione o frete.'});
   const fee=shipping==='sedex'?1790:0;if(fee)itens.push({id:'frete-sedex',nome:'Frete Sedex',quantidade:1,preco_unitario:17.9});
   const event=String(b.evento_id||'');if(!/^ev_[a-zA-Z0-9_-]{8,100}$/.test(event))return send(400,{error:'Identificação do pedido inválida.'});const existing=Object.values(charges).find(x=>x.event===event);if(existing)return send(200,existing.public);if(pending.has(event))return send(409,{error:'Seu PIX está sendo gerado. Aguarde um instante.'});
@@ -30,3 +30,4 @@ export function createPayments({key,root,fetcher=fetch,stateless=false}){
  return send(404,{error:'Rota não encontrada.'});
  }catch(e){return send(e.status||502,{error:e.status?e.message:'Não foi possível processar o pagamento. Tente novamente em instantes.'})}}
 }
+
