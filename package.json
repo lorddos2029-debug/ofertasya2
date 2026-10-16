@@ -4,7 +4,7 @@
   "description": "Ofertasya storefront and PIX checkout",
   "scripts": {
     "start": "node server.mjs",
-    "test": "node --test payments.test.mjs",
+    "test": "node --test payments.test.mjs utmify.test.mjs utmify-integration.test.mjs",
     "build": "node build.mjs"
   },
   "keywords": [],
@@ -18,3 +18,4 @@
     "node": ">=20"
   }
 }
+
