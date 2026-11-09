@@ -34,6 +34,14 @@
     {
       "source": "/capacete/",
       "destination": "/capacete.html"
+    },
+    {
+      "source": "/basike",
+      "destination": "/basike.html"
+    },
+    {
+      "source": "/basike/",
+      "destination": "/basike.html"
     }
   ],
   "headers": [
