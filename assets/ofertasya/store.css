@@ -104,3 +104,10 @@ header nav{flex-wrap:nowrap;white-space:nowrap;min-width:0;max-width:100%;overfl
 #buy:active,#mobile-buy:active{background:#eb7900;color:#000;box-shadow:none}
 #buy span{font-size:20px;font-weight:400}
 @media(max-width:800px){#buy{font-size:16px;font-weight:700;letter-spacing:.2px;min-height:58px;padding-top:16px;padding-bottom:16px;border-width:1px;border-radius:8px;color:#000;background:#ff8a00;box-shadow:none}#buy:hover{background:#f58200;color:#000}#buy:active{background:#eb7900;box-shadow:none}.mobile-purchase #mobile-buy{font-size:13px;font-weight:700;letter-spacing:0;color:#000;background:#ff8a00;box-shadow:none;border-radius:7px}}
+/* Legible prices: neutral tracking and consistent decimal sizing. */
+.price-box .price{font-size:36px;line-height:1.3;letter-spacing:.3px;font-weight:700;font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
+.price-box .price span{font-size:inherit;font-weight:inherit;letter-spacing:inherit}
+.mobile-purchase-price{letter-spacing:.2px;font-variant-numeric:lining-nums tabular-nums}
+#buy,.mobile-purchase #mobile-buy{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-weight:800;letter-spacing:.3px;color:#000}
+#buy{font-size:16px}.mobile-purchase #mobile-buy{font-size:13px}
+@media(max-width:800px){.price-box .price{font-size:36px;letter-spacing:.3px}#buy{font-weight:800;font-size:16px}.mobile-purchase #mobile-buy{font-weight:800}}
