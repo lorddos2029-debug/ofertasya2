@@ -122,3 +122,11 @@ new MutationObserver(refreshMobilePurchase).observe(purchasePanel,{subtree:true,
 new MutationObserver(refreshMobilePurchase).observe($('#cart-overlay'),{attributes:true,attributeFilter:['hidden']});
 new MutationObserver(refreshMobilePurchase).observe($('#lightbox'),{attributes:true,attributeFilter:['open']});
 addEventListener('scroll',refreshMobilePurchase,{passive:true});addEventListener('resize',refreshMobilePurchase);document.addEventListener('focusin',refreshMobilePurchase);document.addEventListener('focusout',()=>requestAnimationFrame(refreshMobilePurchase));refreshMobilePurchase();
+
+// Keep the purchase area compact on future product pages too.
+const productIntro=document.querySelector('.purchase .intro');
+if(productIntro){
+ let descriptionArea=document.querySelector('#detalhes');
+ if(!descriptionArea){descriptionArea=document.createElement('section');descriptionArea.id='detalhes';descriptionArea.className='details';const title=document.createElement('h2');title.textContent='Sobre o produto';descriptionArea.append(title);document.querySelector('.product').after(descriptionArea)}
+ const title=descriptionArea.querySelector('h2');productIntro.className='product-description';if(title)title.after(productIntro);else descriptionArea.prepend(productIntro);
+}
