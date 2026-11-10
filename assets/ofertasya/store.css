@@ -97,3 +97,10 @@ header nav{flex-wrap:nowrap;white-space:nowrap;min-width:0;max-width:100%;overfl
 .product-delivery div.product-shipping-option{cursor:default}
 
 .story-track.story-track-continuous{scroll-snap-type:none;scroll-behavior:auto}.story-controls .story-autoplay{margin-left:auto;font-size:13px}
+/* Purchase buttons: clear black labels and a cleaner, consistent treatment. */
+#buy,#mobile-buy,.closing .primary,.cart .primary{background:#ff8a00;border:1px solid #f58200;color:#000;font-family:Arial,Helvetica,sans-serif;font-weight:700;letter-spacing:.2px;text-shadow:none;box-shadow:none}
+#buy{font-size:15px;min-height:56px;border-radius:8px}
+#buy:hover,#mobile-buy:hover,.closing .primary:hover,.cart .primary:hover{background:#f58200;border-color:#e97700;color:#000}
+#buy:active,#mobile-buy:active{background:#eb7900;color:#000;box-shadow:none}
+#buy span{font-size:20px;font-weight:400}
+@media(max-width:800px){#buy{font-size:16px;font-weight:700;letter-spacing:.2px;min-height:58px;padding-top:16px;padding-bottom:16px;border-width:1px;border-radius:8px;color:#000;background:#ff8a00;box-shadow:none}#buy:hover{background:#f58200;color:#000}#buy:active{background:#eb7900;box-shadow:none}.mobile-purchase #mobile-buy{font-size:13px;font-weight:700;letter-spacing:0;color:#000;background:#ff8a00;box-shadow:none;border-radius:7px}}
