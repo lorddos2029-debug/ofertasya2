@@ -112,4 +112,4 @@ header nav{flex-wrap:nowrap;white-space:nowrap;min-width:0;max-width:100%;overfl
 #buy{font-size:16px}.mobile-purchase #mobile-buy{font-size:13px}
 @media(max-width:800px){.price-box .price{font-size:36px;letter-spacing:.3px}#buy{font-weight:800;font-size:16px}.mobile-purchase #mobile-buy{font-weight:800}}
 
-.price-box .pix-price{font-size:14px;font-weight:700;color:var(--brand-navy);margin-top:10px}
+.price-box .pix-price{display:table;max-width:100%;font-size:12px;font-weight:800;line-height:1.5;color:#126534;background:#edf8ef;border:1px solid #b9dfc2;border-radius:6px;padding:7px 10px;margin:10px 0 0;letter-spacing:.1px}
