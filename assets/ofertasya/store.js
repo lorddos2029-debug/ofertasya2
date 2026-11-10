@@ -10,7 +10,7 @@ if(helmet){const setSize=v=>{size=v;$("#size-label").textContent=v;document.quer
 
 // Shared product-page gallery and store-wide customer milestone.
 const storyTrack=$('#product-story-track');
-$('.story-product').textContent=product.shortName+' · veja as imagens do produto';
+const storySubtitle=$('.story-product');if(storySubtitle)storySubtitle.textContent=product.shortName+' · veja as imagens do produto';
 gallery.forEach((src,i)=>{
  const card=document.createElement('button');card.type='button';card.className='story-card';
  card.setAttribute('aria-label',`Ampliar: ${captions[i]}`);
@@ -24,6 +24,31 @@ function scrollStory(direction){storyTrack.scrollBy({left:direction*storyTrack.c
 storyPrev.onclick=()=>scrollStory(-1);storyNext.onclick=()=>scrollStory(1);
 storyTrack.addEventListener('scroll',updateStoryControls,{passive:true});
 new ResizeObserver(updateStoryControls).observe(storyTrack);
+// Advance the product photos automatically while the carousel is on screen.
+const storyMotion=matchMedia('(prefers-reduced-motion: reduce)');
+let storyVisible=false,storyHovered=false,storyTouching=false,storyTimer;
+function syncStoryAutoplay(){
+ clearInterval(storyTimer);
+ if(!storyVisible||document.hidden||storyMotion.matches||storyHovered||storyTouching||storyTrack.contains(document.activeElement)||$('#lightbox').open||!$('#cart-overlay').hidden)return;
+ storyTimer=setInterval(()=>{
+  const atEnd=storyTrack.scrollLeft+storyTrack.clientWidth>=storyTrack.scrollWidth-2;
+  storyTrack.scrollTo({left:atEnd?0:storyTrack.scrollLeft+storyTrack.clientWidth*.85,behavior:'smooth'});
+ },3000);
+}
+new IntersectionObserver(entries=>{storyVisible=entries[0].isIntersecting;syncStoryAutoplay()},{threshold:.15}).observe(storyTrack);
+storyTrack.addEventListener('mouseenter',()=>{storyHovered=true;syncStoryAutoplay()});
+storyTrack.addEventListener('mouseleave',()=>{storyHovered=false;syncStoryAutoplay()});
+storyTrack.addEventListener('pointerdown',()=>{storyTouching=true;syncStoryAutoplay()});
+addEventListener('pointerup',()=>{storyTouching=false;syncStoryAutoplay()});
+addEventListener('pointercancel',()=>{storyTouching=false;syncStoryAutoplay()});
+storyTrack.addEventListener('focusin',syncStoryAutoplay);
+storyTrack.addEventListener('focusout',()=>requestAnimationFrame(syncStoryAutoplay));
+document.addEventListener('visibilitychange',syncStoryAutoplay);
+storyMotion.addEventListener('change',syncStoryAutoplay);
+new MutationObserver(syncStoryAutoplay).observe($('#lightbox'),{attributes:true,attributeFilter:['open']});
+new MutationObserver(syncStoryAutoplay).observe($('#cart-overlay'),{attributes:true,attributeFilter:['hidden']});
+addEventListener('pagehide',()=>clearInterval(storyTimer));
+addEventListener('pageshow',syncStoryAutoplay);
 for(const [direction,label,symbol] of [[-1,'Foto anterior','‹'],[1,'Próxima foto','›']]){
  const button=document.createElement('button');button.type='button';button.className='gallery-arrow '+(direction<0?'gallery-prev':'gallery-next');button.setAttribute('aria-label',label);button.textContent=symbol;
  button.onclick=()=>photo((active-1+direction+gallery.length)%gallery.length+1);$('.main-image').append(button);
