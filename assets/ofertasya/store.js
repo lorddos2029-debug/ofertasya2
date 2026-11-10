@@ -24,31 +24,38 @@ function scrollStory(direction){storyTrack.scrollBy({left:direction*storyTrack.c
 storyPrev.onclick=()=>scrollStory(-1);storyNext.onclick=()=>scrollStory(1);
 storyTrack.addEventListener('scroll',updateStoryControls,{passive:true});
 new ResizeObserver(updateStoryControls).observe(storyTrack);
-// Advance the product photos automatically while the carousel is on screen.
+// Continuous carousel: touch and mouse hover must not leave autoplay paused.
 const storyMotion=matchMedia('(prefers-reduced-motion: reduce)');
-let storyVisible=false,storyHovered=false,storyTouching=false,storyTimer;
-function syncStoryAutoplay(){
- clearInterval(storyTimer);
- if(!storyVisible||document.hidden||storyMotion.matches||storyHovered||storyTouching||storyTrack.contains(document.activeElement)||$('#lightbox').open||!$('#cart-overlay').hidden)return;
- storyTimer=setInterval(()=>{
-  const atEnd=storyTrack.scrollLeft+storyTrack.clientWidth>=storyTrack.scrollWidth-2;
-  storyTrack.scrollTo({left:atEnd?0:storyTrack.scrollLeft+storyTrack.clientWidth*.85,behavior:'smooth'});
- },3000);
+let storyVisible=false,storyTouching=false,storyFrame=0,storyLastTime=0,storyPosition=0,storyWritten=0,storyCycle=0;
+let storyPaused=storyMotion.matches;
+const storyOriginals=[...storyTrack.children];
+storyOriginals.forEach(card=>{const copy=card.cloneNode(true);copy.tabIndex=-1;copy.setAttribute('aria-hidden','true');copy.onclick=()=>card.click();storyTrack.append(copy)});
+storyTrack.classList.add('story-track-continuous');
+const autoplayButton=document.createElement('button');autoplayButton.type='button';autoplayButton.className='story-autoplay';
+$('.story-controls').insertBefore(autoplayButton,storyNext);
+function updateAutoplayButton(){autoplayButton.textContent=storyPaused?'▶':'Ⅱ';autoplayButton.setAttribute('aria-label',storyPaused?'Reproduzir carrossel':'Pausar carrossel');autoplayButton.setAttribute('aria-pressed',String(storyPaused))}
+function measureStoryCycle(){storyCycle=storyTrack.children[storyOriginals.length].offsetLeft-storyTrack.children[0].offsetLeft}
+function animateStory(time){
+ if(!storyLastTime)storyLastTime=time;
+ const elapsed=Math.min(time-storyLastTime,80);storyLastTime=time;
+ if(storyVisible&&!document.hidden&&!storyPaused&&!storyTouching&&!$('#lightbox').open&&$('#cart-overlay').hidden&&storyCycle>0){
+  if(Math.abs(storyTrack.scrollLeft-storyWritten)>2)storyPosition=storyTrack.scrollLeft;
+  storyPosition=(storyPosition+elapsed*.035)%storyCycle;
+  storyTrack.scrollLeft=storyPosition;storyWritten=storyTrack.scrollLeft;
+ }
+ storyFrame=requestAnimationFrame(animateStory);
 }
-new IntersectionObserver(entries=>{storyVisible=entries[0].isIntersecting;syncStoryAutoplay()},{threshold:.15}).observe(storyTrack);
-storyTrack.addEventListener('mouseenter',()=>{storyHovered=true;syncStoryAutoplay()});
-storyTrack.addEventListener('mouseleave',()=>{storyHovered=false;syncStoryAutoplay()});
-storyTrack.addEventListener('pointerdown',()=>{storyTouching=true;syncStoryAutoplay()});
-addEventListener('pointerup',()=>{storyTouching=false;syncStoryAutoplay()});
-addEventListener('pointercancel',()=>{storyTouching=false;syncStoryAutoplay()});
-storyTrack.addEventListener('focusin',syncStoryAutoplay);
-storyTrack.addEventListener('focusout',()=>requestAnimationFrame(syncStoryAutoplay));
-document.addEventListener('visibilitychange',syncStoryAutoplay);
-storyMotion.addEventListener('change',syncStoryAutoplay);
-new MutationObserver(syncStoryAutoplay).observe($('#lightbox'),{attributes:true,attributeFilter:['open']});
-new MutationObserver(syncStoryAutoplay).observe($('#cart-overlay'),{attributes:true,attributeFilter:['hidden']});
-addEventListener('pagehide',()=>clearInterval(storyTimer));
-addEventListener('pageshow',syncStoryAutoplay);
+autoplayButton.onclick=()=>{storyPaused=!storyPaused;updateAutoplayButton()};updateAutoplayButton();
+new IntersectionObserver(entries=>{storyVisible=entries[0].isIntersecting;storyLastTime=0},{threshold:0}).observe(storyTrack);
+new ResizeObserver(measureStoryCycle).observe(storyTrack);measureStoryCycle();
+storyTrack.addEventListener('pointerdown',()=>{storyTouching=true});
+function releaseStoryTouch(){storyTouching=false;storyPosition=storyTrack.scrollLeft;storyWritten=storyPosition;storyLastTime=0}
+addEventListener('pointerup',releaseStoryTouch);addEventListener('pointercancel',releaseStoryTouch);
+addEventListener('blur',releaseStoryTouch);
+storyMotion.addEventListener('change',()=>{storyPaused=storyMotion.matches;updateAutoplayButton()});
+addEventListener('pagehide',()=>{cancelAnimationFrame(storyFrame);storyFrame=0});
+addEventListener('pageshow',()=>{if(!storyFrame){storyLastTime=0;storyFrame=requestAnimationFrame(animateStory)}});
+storyFrame=requestAnimationFrame(animateStory);
 for(const [direction,label,symbol] of [[-1,'Foto anterior','‹'],[1,'Próxima foto','›']]){
  const button=document.createElement('button');button.type='button';button.className='gallery-arrow '+(direction<0?'gallery-prev':'gallery-next');button.setAttribute('aria-label',label);button.textContent=symbol;
  button.onclick=()=>photo((active-1+direction+gallery.length)%gallery.length+1);$('.main-image').append(button);
