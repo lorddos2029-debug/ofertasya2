@@ -30,3 +30,6 @@ for(const [direction,label,symbol] of [[-1,'Foto anterior','‹'],[1,'Próxima f
 const photoPosition=document.createElement('span');photoPosition.className='photo-position';photoPosition.setAttribute('aria-live','polite');$('.main-image').append(photoPosition);
 function updatePhotoPosition(){photoPosition.textContent=`${active} / ${gallery.length}`}
 new MutationObserver(updatePhotoPosition).observe($('#hero-image'),{attributes:true,attributeFilter:['src']});updatePhotoPosition();
+
+// Review photos use the existing accessible image dialog.
+document.querySelectorAll('.review-photo-button').forEach(button=>{button.onclick=()=>{const image=button.querySelector('img');$('#zoom-image').src=image.src;$('#zoom-image').alt=image.alt;$('#lightbox').showModal()}});
