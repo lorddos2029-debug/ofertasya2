@@ -25,3 +25,9 @@ Copie `.env.example` para `.env` e configure a credencial local. Abra http://loc
     npm run build
 
 Os testes usam respostas simuladas e não criam cobranças reais. O preço e o frete são calculados no servidor. O Pixel Purchase só dispara após confirmação e se o Pixel estiver instalado.
+
+## Padrão para novas páginas de produto
+
+Todas as páginas de produto devem importar `assets/ofertasya/store.js` e `store.css`, definir `body[data-product]` com o ID no catálogo e manter os componentes `.purchase`, `.option-head`, `#buy`, cores/tamanhos, galeria e sacola do modelo existente. O módulo compartilhado adiciona automaticamente o calculador de CEP, as opções de frete e a barra de compra no celular. Links de compra com `href="#produto"` são direcionados para a seleção e o botão de compra.
+
+Preços e prazos de entrega ficam em `assets/ofertasya/shipping.mjs`, usado na página de produto, no checkout e no cálculo do servidor. Atualize essa fonte única para mudar as opções. O CEP e a preferência de frete são reaproveitados na mesma sessão; o checkout consulta novamente o endereço e exige sua conferência antes do pagamento.
