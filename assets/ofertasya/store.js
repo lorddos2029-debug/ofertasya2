@@ -68,7 +68,7 @@ for(const link of document.querySelectorAll('a[href="#produto"]')){
  link.href='#escolher-produto';link.addEventListener('click',()=>{optionsAnchor.focus({preventScroll:true})});
 }
 const delivery=document.createElement('section');delivery.className='product-delivery';delivery.setAttribute('aria-labelledby','delivery-title');
-delivery.innerHTML=`<h2 id="delivery-title">Entrega e pagamento</h2><p>Pagamento via PIX${product.pixDiscount?' · '+product.pixDiscount+'% de desconto no produto':''}. Consulte as opções de entrega para seu CEP.</p><form id="product-delivery-form"><label for="product-cep">Calcular frete e prazo</label><div class="delivery-input"><input id="product-cep" name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9" required pattern="[0-9]{5}-?[0-9]{3}" aria-describedby="product-delivery-status"><button type="submit" class="secondary">Calcular</button></div></form><p id="product-delivery-status" role="status" aria-live="polite"></p><fieldset id="product-delivery-options" hidden><legend>Opções de entrega</legend></fieldset><small>Você confere o endereço e o frete antes de gerar o PIX no checkout.</small>`;
+delivery.innerHTML=`<h2 id="delivery-title">Entrega e pagamento</h2><p>Pagamento via PIX${product.pixDiscount?' · '+product.pixDiscount+'% de desconto no produto':''}. Consulte as opções de entrega para seu CEP.</p><form id="product-delivery-form"><label for="product-cep">Calcular frete e prazo</label><div class="delivery-input"><input id="product-cep" name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9" required pattern="[0-9]{5}-?[0-9]{3}" aria-describedby="product-delivery-status"><button type="submit" class="secondary">Calcular</button></div></form><p id="product-delivery-status" role="status" aria-live="polite"></p><fieldset id="product-delivery-options" hidden><legend>Opções de entrega</legend></fieldset><small>Escolha o frete e confira o endereço no checkout, antes de gerar o PIX.</small>`;
 $('#buy').after(delivery);
 const cepInput=$('#product-cep'),deliveryStatus=$('#product-delivery-status'),deliveryOptions=$('#product-delivery-options'),calculateButton=$('#product-delivery-form button');
 let deliverySequence=0,deliveryController;
@@ -87,16 +87,14 @@ $('#product-delivery-form').onsubmit=async event=>{
   if(sequence!==deliverySequence)return;
   if(!response.ok||data.erro||!data.localidade||!data.uf)throw Error(data.error||'CEP não encontrado. Confira os números.');
   deliveryStatus.textContent='Entrega para '+data.localidade+'/'+data.uf;
-  const legend=document.createElement('legend');legend.textContent='Escolha uma opção de entrega';deliveryOptions.append(legend);
+  const legend=document.createElement('legend');legend.textContent='Opções de entrega disponíveis';deliveryOptions.append(legend);
   shippingOptions.forEach(option=>{
-   const label=document.createElement('label');label.className='product-shipping-option';
-   const input=document.createElement('input');input.type='radio';input.name='product-shipping';input.value=option.id;
+   const label=document.createElement('div');label.className='product-shipping-option';
    const details=document.createElement('span');const name=document.createElement('strong');name.textContent=option.name;const estimate=document.createElement('small');estimate.textContent=option.estimate;details.append(name,estimate);
    const price=document.createElement('b');price.textContent=option.price?money(option.price/100):'Grátis';
-   input.onchange=()=>{try{sessionStorage.setItem('ofertasya-delivery',JSON.stringify({cep,shipping:option.id}))}catch{}};
-   label.append(input,details,price);deliveryOptions.append(label);
+   label.append(details,price);deliveryOptions.append(label);
   });deliveryOptions.hidden=false;
-  deliveryOptions.querySelector('input').checked=true;deliveryOptions.querySelector('input').onchange();
+  try{sessionStorage.setItem('ofertasya-delivery',JSON.stringify({cep}))}catch{}
  }catch(error){if(sequence===deliverySequence)deliveryStatus.textContent=error.name==='AbortError'?'A consulta demorou. Tente calcular novamente.':error.message||'Não foi possível consultar o CEP. Tente novamente.'}
  finally{clearTimeout(timeout);if(sequence===deliverySequence){calculateButton.disabled=false;calculateButton.textContent='Calcular'}}
 };

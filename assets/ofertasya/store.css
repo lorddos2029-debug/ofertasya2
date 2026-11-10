@@ -93,3 +93,5 @@ header .bag{display:inline-flex;align-items:center;justify-content:center;gap:8p
 header nav{flex-wrap:nowrap;white-space:nowrap;min-width:0;max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-inline:contain}header nav::-webkit-scrollbar{display:none}header nav a{flex-shrink:0}
 @media(max-width:800px){header nav{justify-content:flex-start;gap:14px;font-size:10px;padding:10px 0;flex-wrap:nowrap}header nav a{white-space:nowrap}}
 @media(max-width:800px){header nav{gap:10px;font-size:9px}}
+
+.product-delivery div.product-shipping-option{cursor:default}
