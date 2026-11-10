@@ -50,6 +50,14 @@
     {
       "source": "/travesseiro/",
       "destination": "/travesseiro.html"
+    },
+    {
+      "source": "/robo",
+      "destination": "/robo.html"
+    },
+    {
+      "source": "/robo/",
+      "destination": "/robo.html"
     }
   ],
   "headers": [
