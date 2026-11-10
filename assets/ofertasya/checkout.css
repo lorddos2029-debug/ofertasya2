@@ -16,3 +16,5 @@ input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #f582
 .panel label{line-height:1.5}
 
 .method-option{display:flex;align-items:center;gap:10px;padding:14px 12px;border:1px solid var(--checkout-border);border-radius:8px;cursor:pointer;background:#fff;margin:12px 0;color:var(--checkout-ink)}.method-option:has(input:checked){border-color:#f58200;background:#fff5e8}.method-option input[type="radio"]{display:block;width:17px;height:17px;min-height:0;margin:0;padding:0;flex:0 0 17px;accent-color:#f58200}.method-option>span{display:flex;align-items:center;gap:8px;flex:1;font-size:13px;font-weight:700}.method-option small{font-size:10px;color:var(--checkout-muted)}.pix-icon{display:block;width:25px;height:25px;object-fit:contain}.primary:disabled{opacity:.5;cursor:not-allowed}
+
+#card-fields{padding-top:8px}#card-fields select{display:block;width:100%;min-height:50px;padding:12px 14px;margin-top:6px;border:1px solid var(--checkout-border);border-radius:5px;background:#fff;font:16px Inter,Arial,sans-serif;color:var(--checkout-ink)}
