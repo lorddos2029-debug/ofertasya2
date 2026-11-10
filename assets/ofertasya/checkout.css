@@ -10,3 +10,7 @@
 .steps button[aria-current=step]{color:#102b40}.steps button[aria-current=step] b{background:#f58200;color:#102b40}
 .shipping-option:has(input:checked){border-color:#f58200;background:#fff5e8}.shipping-option input{accent-color:#f58200}
 input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #f58200;outline-offset:3px}
+/* Comfortable spacing for typed information, including after Tailwind resets. */
+.panel input:not([type="radio"]):not([type="checkbox"]){height:50px;min-height:50px;padding:12px 14px;line-height:24px;box-sizing:border-box;font-size:16px}
+.panel textarea{padding:12px 14px;line-height:1.5;box-sizing:border-box}
+.panel label{line-height:1.5}
