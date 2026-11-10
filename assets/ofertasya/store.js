@@ -6,3 +6,27 @@ const $=s=>document.querySelector(s);const money=n=>n.toLocaleString('pt-BR',{st
 if(helmet){const setSize=v=>{size=v;$("#size-label").textContent=v;document.querySelectorAll("[data-size]").forEach(b=>{b.classList.toggle("selected",b.dataset.size===v);b.setAttribute("aria-pressed",b.dataset.size===v)});const u=new URL(location.href);u.searchParams.set("tamanho",v);history.replaceState(null,"",u)};document.querySelectorAll("[data-size]").forEach(b=>b.onclick=()=>setSize(b.dataset.size));const initialSize=new URLSearchParams(location.search).get("tamanho");setSize(product.sizes.includes(initialSize)?initialSize:"58/M")}
 
 
+
+// Shared product-page gallery and store-wide customer milestone.
+const storyTrack=$('#product-story-track');
+$('.story-product').textContent=product.shortName+' · veja as imagens do produto';
+gallery.forEach((src,i)=>{
+ const card=document.createElement('button');card.type='button';card.className='story-card';
+ card.setAttribute('aria-label',`Ampliar: ${captions[i]}`);
+ const image=document.createElement('img');image.src=src;image.alt=captions[i];image.loading='lazy';
+ const caption=document.createElement('span');caption.textContent=captions[i];card.append(image,caption);
+ card.onclick=()=>{photo(i+1);$('#zoom').click()};storyTrack.append(card);
+});
+const storyPrev=$('#story-prev'),storyNext=$('#story-next');
+function updateStoryControls(){storyPrev.disabled=storyTrack.scrollLeft<2;storyNext.disabled=storyTrack.scrollLeft+storyTrack.clientWidth>=storyTrack.scrollWidth-2}
+function scrollStory(direction){storyTrack.scrollBy({left:direction*storyTrack.clientWidth*.85,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})}
+storyPrev.onclick=()=>scrollStory(-1);storyNext.onclick=()=>scrollStory(1);
+storyTrack.addEventListener('scroll',updateStoryControls,{passive:true});
+new ResizeObserver(updateStoryControls).observe(storyTrack);
+for(const [direction,label,symbol] of [[-1,'Foto anterior','‹'],[1,'Próxima foto','›']]){
+ const button=document.createElement('button');button.type='button';button.className='gallery-arrow '+(direction<0?'gallery-prev':'gallery-next');button.setAttribute('aria-label',label);button.textContent=symbol;
+ button.onclick=()=>photo((active-1+direction+gallery.length)%gallery.length+1);$('.main-image').append(button);
+}
+const photoPosition=document.createElement('span');photoPosition.className='photo-position';photoPosition.setAttribute('aria-live','polite');$('.main-image').append(photoPosition);
+function updatePhotoPosition(){photoPosition.textContent=`${active} / ${gallery.length}`}
+new MutationObserver(updatePhotoPosition).observe($('#hero-image'),{attributes:true,attributeFilter:['src']});updatePhotoPosition();
