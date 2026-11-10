@@ -42,6 +42,14 @@
     {
       "source": "/basike/",
       "destination": "/basike.html"
+    },
+    {
+      "source": "/travesseiro",
+      "destination": "/travesseiro.html"
+    },
+    {
+      "source": "/travesseiro/",
+      "destination": "/travesseiro.html"
     }
   ],
   "headers": [
