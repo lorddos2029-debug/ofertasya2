@@ -37,3 +37,5 @@ Descrições introdutórias ficam na seção `#detalhes`, abaixo do título da s
 ## PIX PinPay
 
 Documentação: https://hub.usepinpay.com/documentacao . A API do servidor autentica com `PINPAY_SECRET_KEY`, envia valores em centavos para `POST /functions/v1/api-v1/pix` e consulta `GET /functions/v1/api-v1/pix/{id}`. Cada pedido usa `Idempotency-Key` estável e os campos obrigatórios `metadata.external_reference` e `metadata.checkout_url`. O código normaliza `paid`/`approved` para confirmação, confere o valor e mantém QR Code local, UTMify e Meta. A chave pública não é necessária para a chamada PIX server-side e não é inserida no HTML. Não coloque chaves reais nos testes.
+
+Se a PinPay retornar `no_acquirer` (HTTP 422), selecione/habilite uma adquirente PIX na conta PinPay. A autenticação pode funcionar mesmo sem adquirente disponível. O checkout responde 503 sem culpar os dados do comprador; os logs guardam apenas o código e o status, sem chaves nem dados pessoais.

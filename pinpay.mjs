@@ -9,7 +9,13 @@ export function createPinpayClient({key,fetcher=fetch}){
   const u=new URL(url);if(u.origin!=='https://api.usepinpay.com'||!u.pathname.startsWith('/functions/v1/api-v1/pix'))throw failed('Rota de consulta PIX inválida.');
   let response;try{response=await fetcher(url,{...options,headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json',...options.headers},redirect:'error',signal:AbortSignal.timeout(20000)})}catch{throw failed('Não foi possível confirmar a resposta do serviço PIX. Tente novamente em instantes.')}
   let data;try{data=await response.json()}catch{throw failed('O serviço PIX retornou uma resposta inválida.')}
-  if(!response.ok||!data||typeof data!=='object')throw failed('Não foi possível processar o PIX. Confira os dados ou tente novamente em instantes.');return data;
+  if(!response.ok||!data||typeof data!=='object'){
+   const knownCodes=['no_acquirer','invalid_amount','missing_customer','invalid_document','missing_external_reference','missing_checkout_url','unauthorized','rate_limit'];
+   const code=knownCodes.includes(data?.error?.code)?data.error.code:'upstream_error';
+   console.warn('[PinPay] Requisição recusada',{http:response.status,code});
+   if(code==='no_acquirer')throw failed('Pagamento PIX temporariamente indisponível. Tente novamente mais tarde.',503);
+   throw failed('Não foi possível processar o PIX. Confira os dados ou tente novamente em instantes.');
+  }return data;
  }
  return {
   async create(payload){
