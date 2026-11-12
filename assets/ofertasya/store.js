@@ -1,4 +1,5 @@
 import {shippingOptions,shippingFor} from './shipping.mjs';
+import {applyProductLayout} from './product-layout.js';
 import {catalog,productFor,validItem,pixUnitPrice} from './catalog.mjs';
 const product=catalog[document.body.dataset.product||'bettdow'];const camera=product.id==='camera',helmet=product.id==='capacete',basike=product.id==='basike';let size='58/M';
 const trackingKeys=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','fbclid'];for(const k of trackingKeys){const v=new URLSearchParams(location.search).get(k);if(v)sessionStorage.setItem('ofertasya-'+k,v)};
@@ -133,3 +134,5 @@ if(productIntro){
 
 // Automatically show PIX pricing on future participating product pages.
 if(product.pixDiscount&&!document.querySelector('.pix-price')){const priceNote=document.createElement('p');priceNote.className='pix-price';priceNote.textContent=product.pixDiscount+'% OFF no PIX: '+money(pixUnitPrice({productId:product.id})/100);document.querySelector('.price-box .price')?.after(priceNote)}
+
+applyProductLayout(product,money);
