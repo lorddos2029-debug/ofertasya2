@@ -74,6 +74,14 @@
     {
       "source": "/climatizador/",
       "destination": "/climatizador.html"
+    },
+    {
+      "source": "/ventilador",
+      "destination": "/ventilador.html"
+    },
+    {
+      "source": "/ventilador/",
+      "destination": "/ventilador.html"
     }
   ],
   "headers": [

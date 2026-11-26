@@ -27,6 +27,11 @@ try{
   const response=await post([selected],'ev_voltage_'+voltage+'_12345',{valor:0.01});assert.equal(response.status,200);const charge=await response.json();assert.equal(charge.valor,121.51);assert.equal(pinpayCalls.at(-1).amount,12151);assert(pinpayCalls.at(-1).description.includes(voltage));
   const order=trackingCalls.at(-1);assert(order.products[0].name.includes('Voltagem '+voltage));assert.equal(order.products[0].id,variantId(selected));assert.equal(order.products[0].priceInCents,12151);
  }
+ for(const voltage of ['110V','220V']){
+  const tower={productId:'ventilador',color:'Branco',quantity:1,voltage};assert(validItem(tower));
+  const response=await post([tower],'ev_tower_'+voltage+'_123456',{valor:0.01});assert.equal(response.status,200);assert.equal((await response.json()).valor,85.41);assert.equal(pinpayCalls.at(-1).amount,8541);assert(pinpayCalls.at(-1).description.includes(voltage));assert.equal(trackingCalls.at(-1).products[0].id,'ventilador-branco-'+voltage.toLowerCase());assert(trackingCalls.at(-1).products[0].name.includes(voltage));
+ }
+ assert.equal(validItem({productId:'ventilador',color:'Branco',quantity:1}),false);
  const calls=pinpayCalls.length;
  for(const invalid of [item,{...item,voltage:'bivolt'},{...item,voltage:'220'},{...item,voltage:'220V',color:'Preto'}])assert.equal((await post([invalid],'ev_invalid_voltage_123456')).status,400);
  assert.equal(pinpayCalls.length,calls);
