@@ -25,3 +25,4 @@
 }
 .reference-layout .swatch,.reference-layout .swatch.selected{position:relative;width:52px;height:52px;min-height:52px;border-radius:50%;padding:0;overflow:hidden}.reference-layout .swatch span{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 @media(max-width:350px){.layout-payment-marks>div{gap:3px}.layout-payment-marks img{width:31px;height:22px}.reference-layout .mobile-purchase{gap:6px}.sticky-product-thumb{width:36px;height:36px}.reference-layout .mobile-purchase .primary{padding:12px;font-size:11px}}
+.reference-layout .layout-badges .pre-black-friday{background:#000;border-color:#000;color:#fff}

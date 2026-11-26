@@ -2,7 +2,7 @@ import {catalog,productFor,validItem} from './catalog.mjs';
 import {icon} from './layout-icons.js';
 const $=s=>document.querySelector(s),money=n=>(n/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 for(const key of ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','fbclid']){const value=new URLSearchParams(location.search).get(key);if(value)sessionStorage.setItem('ofertasya-'+key,value)}
-$('.announcement').innerHTML='<span>Frete grátis para todo o Brasil</span><span>Promoção de pré Black Friday</span><span>Ofertasya · Boas escolhas</span>';
+$('.announcement').innerHTML='<span>Frete grátis para todo o Brasil</span><span>Promoção de Black Friday</span><span>Ofertasya · Boas escolhas</span>';
 const header=$('header'),nav=header.querySelector('nav');nav.id='store-navigation';nav.setAttribute('aria-label','Produtos');
 const menu=document.createElement('button');menu.type='button';menu.className='layout-menu';menu.setAttribute('aria-controls',nav.id);header.prepend(menu);
 const setMenu=open=>{header.classList.toggle('menu-open',open);menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Fechar menu':'Abrir menu');menu.innerHTML=icon(open?'close':'menu',24)};setMenu(false);menu.onclick=()=>setMenu(menu.getAttribute('aria-expanded')!=='true');nav.addEventListener('click',()=>setMenu(false));

@@ -4,7 +4,7 @@ export function applyProductLayout(product, money) {
  const $=s=>document.querySelector(s);
  if(!document.querySelector('link[href="/assets/ofertasya/product-layout.css"]')){const stylesheet=document.createElement('link');stylesheet.rel='stylesheet';stylesheet.href='/assets/ofertasya/product-layout.css';document.head.append(stylesheet)}
  document.body.classList.add('reference-layout');
- $('.announcement').textContent='PROMOÇÃO DE PRÉ BLACK FRIDAY · OFERTASYA';
+ $('.announcement').textContent='PROMOÇÃO DE BLACK FRIDAY · OFERTASYA';
  const header=$('header');
  const menu=document.createElement('button');menu.type='button';menu.className='layout-menu';menu.setAttribute('aria-label','Abrir menu');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-controls','store-navigation');menu.textContent='☰';
  const nav=header.querySelector('nav');nav.id='store-navigation';
@@ -19,7 +19,7 @@ export function applyProductLayout(product, money) {
  }
  productSection.append(description);
  const story=$('.product-story');if(story)productSection.after(story);
- const promo=$('.pre-black-friday');promo.textContent='PRÉ BLACK FRIDAY';
+ const promo=$('.pre-black-friday');promo.textContent='BLACK FRIDAY';
  const badgeRow=document.createElement('div');badgeRow.className='layout-badges';
  const storeBadge=document.createElement('span');storeBadge.textContent='OFERTA OFERTASYA';badgeRow.append(storeBadge,promo);purchase.prepend(badgeRow);
  const reviews=[...document.querySelectorAll('.camera-review')];
