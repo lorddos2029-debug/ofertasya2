@@ -1,5 +1,5 @@
 import {shippingOptions,shippingFor} from './shipping.mjs';
-import {applyProductLayout} from './product-layout.js';
+import {applyProductLayout} from './vantto-product-layout.js';
 import {catalog,productFor,validItem,pixUnitPrice} from './catalog.mjs';
 const product=catalog[document.body.dataset.product||'bettdow'];const camera=product.id==='camera',helmet=product.id==='capacete',basike=product.id==='basike';let size='58/M';
 const trackingKeys=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','fbclid'];for(const k of trackingKeys){const v=new URLSearchParams(location.search).get(k);if(v)sessionStorage.setItem('ofertasya-'+k,v)};
@@ -116,7 +116,7 @@ function refreshMobilePurchase(){
  const buyRect=$('#buy').getBoundingClientRect();const headerBottom=document.querySelector('header').getBoundingClientRect().bottom;
  const buyVisible=buyRect.bottom>headerBottom&&buyRect.top<innerHeight;
  const editing=document.activeElement?.matches('input,textarea,select');
- mobilePurchase.hidden=!matchMedia('(max-width: 800px)').matches||buyVisible||!$('#cart-overlay').hidden||$('#lightbox').open||editing;
+ mobilePurchase.hidden=buyVisible||!$('#cart-overlay').hidden||$('#lightbox').open||editing;
 }
 $('#mobile-buy').onclick=()=>$('#buy').click();
 new MutationObserver(refreshMobilePurchase).observe(purchasePanel,{subtree:true,attributes:true,attributeFilter:['aria-pressed'],characterData:true,childList:true});
