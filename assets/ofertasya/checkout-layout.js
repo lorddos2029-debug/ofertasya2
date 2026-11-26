@@ -2,7 +2,7 @@ import {icon,paymentBrandsMarkup} from './layout-icons.js';
 
 export function paintCheckoutItem(element,item,product,unitPrice,money){
  let image=element.querySelector('.checkout-item-image');if(!image){image=document.createElement('div');image.className='checkout-item-image';const img=element.querySelector('img');img.before(image);image.append(img);const badge=document.createElement('span');badge.textContent=item.quantity;image.append(badge)}
- const info=element.lastElementChild;info.className='checkout-item-info';const name=document.createElement('p');name.textContent=product.shortName;const variant=document.createElement('small');variant.textContent=item.color+(item.size?' · '+item.size:'');const price=document.createElement('strong');price.textContent=money(item.quantity*unitPrice/100);info.replaceChildren(name,variant,price);
+ const info=element.lastElementChild;info.className='checkout-item-info';const name=document.createElement('p');name.textContent=product.shortName;const variant=document.createElement('small');variant.textContent=item.color+(item.size?' · '+item.size:'')+(item.voltage?' · '+item.voltage:'');const price=document.createElement('strong');price.textContent=money(item.quantity*unitPrice/100);info.replaceChildren(name,variant,price);
 }
 
 export function initCheckoutLayout(){
