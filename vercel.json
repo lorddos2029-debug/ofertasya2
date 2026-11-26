@@ -58,6 +58,14 @@
     {
       "source": "/robo/",
       "destination": "/robo.html"
+    },
+    {
+      "source": "/relogio",
+      "destination": "/relogio.html"
+    },
+    {
+      "source": "/relogio/",
+      "destination": "/relogio.html"
     }
   ],
   "headers": [
