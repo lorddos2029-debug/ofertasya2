@@ -1,0 +1,61 @@
+/* Ofertasya palette supplied by the store owner. */
+:root{--brand-orange:#c45120;--brand-orange-hover:#a94118;--brand-navy:#242424;--brand-tint:#f5ede3;--ink:#242424;--muted:#777;--line:#24242424;--surface:#f5ede3;--checkout-primary:#c45120;--checkout-accent:#c45120;--checkout-background:#fff;--checkout-muted:#777;--checkout-border:#24242424;--checkout-ink:#242424;--accent:#c45120}
+body.reference-layout,body.vantto-checkout{color:#242424;background:#fff;--accent:#c45120;--line:#24242424}
+.reference-layout .announcement{background:#242424;color:#fff}
+.reference-layout header,.vantto-checkout header{background:#fff;border-color:#24242424}
+.reference-layout .primary,.reference-layout #buy,.reference-layout .mobile-purchase .primary,.home-page .cart .primary,.vantto-checkout .primary{background:#c45120;border-color:#c45120;color:#fff}
+.reference-layout .primary:hover,.reference-layout #buy:hover,.reference-layout .mobile-purchase .primary:hover,.vantto-checkout .primary:hover:not(:disabled){background:#a94118;border-color:#a94118;color:#fff}
+.reference-layout .bag span,.reference-layout .pre-black-friday,.reference-layout .size-option.selected{background:#c45120;border-color:#c45120;color:#fff}
+.reference-layout .swatch.selected{border-color:#c45120;background:#f5ede3;color:#242424}
+.reference-layout .thumbnails button.active{border-color:#c45120}
+.reference-layout .layout-search input{background:#f5ede3;border-color:#24242424;color:#242424}
+.reference-layout .layout-search>svg,.reference-layout .layout-rating,.reference-layout .option-head,.reference-layout .layout-payment-toggle{color:#777}
+.reference-layout .layout-search>div,.reference-layout header nav,.reference-layout header.menu-open nav{background:#fff;border-color:#24242424}
+.reference-layout .layout-search>div a:hover{background:#f5ede3}
+.reference-layout .main-image,.reference-layout .main-image img,.reference-layout .layout-related img{background:#fff}
+.reference-layout .layout-badges>span,.reference-layout .product-delivery,.reference-layout .layout-review-summary,.reference-layout .product-description-panel .dark,.reference-layout #product-payment-info{background:#f5ede3;border-color:#24242424;color:#242424}
+.reference-layout .product-delivery h2>svg,.reference-layout .layout-guarantee>svg{color:#c45120}
+.reference-layout .product-delivery small,.reference-layout .layout-guarantee p,.reference-layout .product-description-panel p,.reference-layout .camera-review p{color:#777}
+.reference-layout .product-description-panel .feature-strip,.reference-layout .cards article{background:#f5ede3}
+.reference-layout .product-shipping-option{background:#fff;border-color:#24242424}
+.reference-layout .quantity-row,.reference-layout .layout-guarantee,.reference-layout .camera-review{border-color:#24242424}
+.reference-layout .mobile-purchase{background:#fff;border-color:#24242424;box-shadow:0 -4px 16px #24242414}
+.reference-layout .mobile-purchase-price,.reference-layout .sticky-product-name{color:#242424}
+.reference-layout .mobile-purchase-selection{color:#777}
+.reference-layout footer{background:#242424;color:#fff}
+.reference-layout footer p,.reference-layout footer small,.reference-layout footer .layout-footer-grid section>a:not(.brand-logo){color:#f5ede3}
+.reference-layout .text-link,.reference-layout .layout-related a>span{color:#c45120}
+.home-page .home-hero{background:#f5ede3;color:#242424}
+.home-page .home-hero-eyebrow{color:#c45120}
+.home-page .home-hero-copy p{color:#777}
+.home-page .home-hero-cta{background:#c45120;color:#fff}
+.home-page .home-hero-products>div{background:#fff;box-shadow:0 16px 45px #24242426}
+.home-page .home-benefits{background:#fff;border-color:#24242424}
+.home-page .home-benefits svg{color:#c45120}
+.home-page .home-section-heading>a,.home-page .home-card-price>strong,.home-page .home-card-shipping{color:#c45120}
+.home-page .home-product-card{background:#f5ede3;box-shadow:0 6px 20px -12px #24242440}
+.home-page .home-card-photo{background:#fff}
+.home-page .home-card-badge{background:#c45120;color:#fff}
+.home-page .home-search-status{color:#777}
+.vantto-checkout .checkout-shell,.vantto-checkout .panel,.vantto-checkout .checkout-footer{background:#fff}
+.vantto-checkout .checkout-summary,.vantto-checkout .delivery-review{background:#f5ede3}
+.vantto-checkout .checkout-secure,.vantto-checkout .checkout-reassurance svg{color:#c45120}
+.vantto-checkout .steps button[aria-current=step]{color:#c45120}
+.vantto-checkout .steps button[aria-current=step] b,.vantto-checkout .number,.vantto-checkout .checkout-item-image>span{background:#c45120;border-color:#c45120;color:#fff}
+.vantto-checkout .steps button:not([aria-current=step]) b{background:#fff;border-color:#24242424;color:#777}
+.vantto-checkout .steps button:not(:first-child):before{background:#24242424}
+.vantto-checkout #form-section>section{border-color:#c4512080}
+.vantto-checkout .panel input:not([type=radio]):not([type=checkbox]),.vantto-checkout #card-fields select,.vantto-checkout .panel textarea,.vantto-checkout .checkout-coupon input{background:#fff;border-color:#24242424;color:#242424}
+.vantto-checkout .shipping-option:has(input:checked),.vantto-checkout .method-option:has(input:checked){background:#f5ede3;border-color:#c45120}
+.vantto-checkout .shipping-option input,.vantto-checkout .method-option input[type=radio]{accent-color:#c45120}
+.vantto-checkout .shipping-option b,.vantto-checkout .summary-line #shipping-price{color:#c45120}
+.vantto-checkout .total #total,.vantto-checkout .checkout-item-info p,.vantto-checkout .checkout-item-info strong{color:#242424}
+.vantto-checkout .muted,.vantto-checkout .summary-secure,.vantto-checkout .checkout-reassurance,.vantto-checkout .checkout-edit-cart,.vantto-checkout .checkout-footer,.vantto-checkout .text-button{color:#777}
+.vantto-checkout .pix-tutorial li:before{background:#c45120;color:#fff}
+/* The transparent logo follows the new brand color without changing its shape. */
+.reference-layout .brand-logo,.vantto-checkout header .logo{position:relative;display:inline-flex}
+.reference-layout .brand-logo:before,.vantto-checkout header .logo:before{content:'';position:absolute;inset:0;background:#c45120;mask:url('/assets/ofertasya/ofertasya-brand.svg') center/contain no-repeat;-webkit-mask:url('/assets/ofertasya/ofertasya-brand.svg') center/contain no-repeat;pointer-events:none}
+.reference-layout .brand-logo img,.vantto-checkout header .logo img{opacity:0}
+.reference-layout footer .brand-logo img{background:none;padding:0}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline-color:#c45120!important}
+@media(max-width:1023px){.vantto-checkout .checkout-summary{background:#f5ede3;border-color:#24242424}}
