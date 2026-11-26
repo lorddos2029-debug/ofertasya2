@@ -28,7 +28,7 @@ export function applyProductLayout(product, money) {
  else rating.textContent='Confira as avaliações do produto';
  purchase.querySelector('h1').after(rating);
  const pay=document.createElement('button');pay.type='button';pay.className='layout-payment-toggle';pay.textContent='▣ Opções de pagamento';pay.setAttribute('aria-expanded','false');pay.setAttribute('aria-controls','product-payment-info');
- const info=document.createElement('p');info.id='product-payment-info';info.hidden=true;info.textContent='PIX'+(product.pixDiscount?' com '+product.pixDiscount+'% de desconto':'')+'. Cartão: até 6x sem juros e de 7x a 12x com juros. A cobrança por cartão está desativada no momento.';
+ const info=document.createElement('p');info.id='product-payment-info';info.hidden=true;info.textContent='PIX'+(product.pixDiscount?' com '+product.pixDiscount+'% de desconto':'')+'. Cartão: até 6x sem juros e de 7x a 12x com juros.';
  pay.onclick=()=>{info.hidden=!info.hidden;pay.setAttribute('aria-expanded',String(!info.hidden))};
  const priceBox=$('.price-box');priceBox.append(pay,info);
  const pix=priceBox.querySelector('.pix-price');if(pix){const icon=document.createElement('img');icon.src='/assets/ofertasya/pix.png';icon.alt='';icon.width=17;icon.height=17;pix.prepend(icon);priceBox.append(pix)}
