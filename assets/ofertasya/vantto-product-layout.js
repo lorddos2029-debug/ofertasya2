@@ -1,3 +1,4 @@
+import {mountFooter} from './footer.mjs';
 import {catalog} from './catalog.mjs';
 import {icon,paymentBrandsMarkup} from './layout-icons.js';
 
@@ -22,5 +23,5 @@ export function applyProductLayout(product,money){
  const story=$('.product-story');if(story)description.after(story);if(average){const summary=document.createElement('div');summary.className='layout-review-summary';summary.innerHTML='<strong>'+average.toFixed(1)+'</strong><div><span aria-hidden="true">★★★★★</span><p>'+reviewCards.length+' avaliações</p></div>';$('#avaliacoes').querySelector('div').after(summary)}
  const sticky=$('.mobile-purchase'),thumb=document.createElement('img');thumb.src=Object.values(product.images)[0];thumb.alt='';thumb.className='sticky-product-thumb';thumb.width=44;thumb.height=44;sticky.prepend(thumb);const name=document.createElement('p');name.className='sticky-product-name';name.textContent=product.shortName;sticky.querySelector('div').prepend(name);for(const button of [$('#buy'),$('#mobile-buy')])button.innerHTML='Comprar agora';
  const related=document.createElement('section');related.className='layout-related';related.innerHTML='<h2>Produtos relacionados</h2><div></div>';for(const p of Object.values(catalog)){if(p.id===product.id)continue;const link=document.createElement('a');link.href=p.id==='bettdow'?'/relogio':'/'+p.id;const img=document.createElement('img');img.src=Object.values(p.images)[0];img.alt=p.shortName;img.loading='lazy';const name=document.createElement('strong');name.textContent=p.shortName;const price=document.createElement('span');price.textContent=money(p.price/100);link.append(img,name,price);related.querySelector('div').append(link)}$('main').append(related);
- const footer=$('footer'),grid=document.createElement('div');grid.className='layout-footer-grid';const brand=document.createElement('section');brand.append(footer.querySelector('.brand-logo'),footer.querySelector('p'));const products=document.createElement('section');products.innerHTML='<h3>Produtos</h3>';for(const link of nav.querySelectorAll('a:not([href^="#"])'))products.append(link.cloneNode(true));const help=document.createElement('section');help.innerHTML='<h3>Atendimento</h3>';help.append(...footer.querySelector('div').children);footer.querySelector('div').remove();grid.append(brand,products,help);footer.prepend(grid);
+ mountFooter();
 }

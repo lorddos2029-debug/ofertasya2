@@ -1,3 +1,4 @@
+import {mountFooter} from './footer.mjs';
 import {icon,paymentBrandsMarkup} from './layout-icons.js';
 
 export function paintCheckoutItem(element,item,product,unitPrice,money){
@@ -22,6 +23,6 @@ export function initCheckoutLayout(){
  $('#coupon-toggle').onclick=()=>{const open=$('#coupon-form').hidden;$('#coupon-form').hidden=!open;$('#coupon-toggle').setAttribute('aria-expanded',String(open))};$('#coupon-form').onsubmit=e=>{e.preventDefault();$('#coupon-message').textContent='Cupom inválido ou indisponível.'};
  const lockNote=document.createElement('p');lockNote.className='summary-secure';lockNote.innerHTML=icon('lock',14)+' Ambiente seguro';$('#summary-content').append(lockNote);
  const edit=document.createElement('a');edit.href='/';edit.className='checkout-edit-cart';edit.textContent='Continuar comprando';$('#summary-content').append(edit);
- const footer=$('.checkout-footer');footer.innerHTML='<p>© '+new Date().getFullYear()+' Ofertasya</p><div class="layout-payment-marks">'+paymentBrandsMarkup+'</div>';
+ mountFooter();
  const updateTotal=()=>{$('#summary-header-total').textContent=$('#total').textContent};new MutationObserver(updateTotal).observe($('#total'),{childList:true,characterData:true,subtree:true});updateTotal();
 }

@@ -82,6 +82,94 @@
     {
       "source": "/ventilador/",
       "destination": "/ventilador.html"
+    },
+    {
+      "source": "/trocas-e-devolucoes",
+      "destination": "/info-trocas-e-devolucoes.html"
+    },
+    {
+      "source": "/trocas-e-devolucoes/",
+      "destination": "/info-trocas-e-devolucoes.html"
+    },
+    {
+      "source": "/politica-de-privacidade",
+      "destination": "/info-politica-de-privacidade.html"
+    },
+    {
+      "source": "/politica-de-privacidade/",
+      "destination": "/info-politica-de-privacidade.html"
+    },
+    {
+      "source": "/perguntas-frequentes",
+      "destination": "/info-perguntas-frequentes.html"
+    },
+    {
+      "source": "/perguntas-frequentes/",
+      "destination": "/info-perguntas-frequentes.html"
+    },
+    {
+      "source": "/acompanhar-pedido",
+      "destination": "/info-acompanhar-pedido.html"
+    },
+    {
+      "source": "/acompanhar-pedido/",
+      "destination": "/info-acompanhar-pedido.html"
+    },
+    {
+      "source": "/sobre-nos",
+      "destination": "/info-sobre-nos.html"
+    },
+    {
+      "source": "/sobre-nos/",
+      "destination": "/info-sobre-nos.html"
+    },
+    {
+      "source": "/nossas-lojas",
+      "destination": "/info-nossas-lojas.html"
+    },
+    {
+      "source": "/nossas-lojas/",
+      "destination": "/info-nossas-lojas.html"
+    },
+    {
+      "source": "/trabalhe-conosco",
+      "destination": "/info-trabalhe-conosco.html"
+    },
+    {
+      "source": "/trabalhe-conosco/",
+      "destination": "/info-trabalhe-conosco.html"
+    },
+    {
+      "source": "/atendimento",
+      "destination": "/info-atendimento.html"
+    },
+    {
+      "source": "/atendimento/",
+      "destination": "/info-atendimento.html"
+    },
+    {
+      "source": "/whatsapp",
+      "destination": "/info-whatsapp.html"
+    },
+    {
+      "source": "/whatsapp/",
+      "destination": "/info-whatsapp.html"
+    },
+    {
+      "source": "/mapa-do-site",
+      "destination": "/info-mapa-do-site.html"
+    },
+    {
+      "source": "/mapa-do-site/",
+      "destination": "/info-mapa-do-site.html"
+    },
+    {
+      "source": "/fale-conosco",
+      "destination": "/info-atendimento.html"
+    },
+    {
+      "source": "/fale-conosco/",
+      "destination": "/info-atendimento.html"
     }
   ],
   "headers": [
