@@ -31,7 +31,7 @@ try{
  const unconfigured=createPinpayClient({key:'test',fetcher:async()=>({ok:false,status:422,json:async()=>({error:{code:'no_acquirer',message:'Nenhuma adquirente selecionada ou habilitada para esta conta.'}})})});await assert.rejects(()=>unconfigured.create({evento_id:'no_acquirer',valor:1}),e=>e.status===503&&e.message.includes('temporariamente indisponível')&&!e.message.includes('Confira os dados'));
  let sent=false;const safe=createPinpayClient({key:'secret',fetcher:async()=>{sent=true}});await assert.rejects(()=>safe.status('https://evil.example/pix/id'));assert.equal(sent,false);
  // A previously issued UrusPay token remains readable after enabling PinPay.
- const legacyOpts={key:'legacy-seal-key',root,stateless:true,fetcher:async(url,o)=>({ok:true,json:async()=>o.method==='POST'?{ok:true,venda_id:42,pix_code:'legacy-code',status:'pending'}:{ok:true,venda_id:42,status:'paid',pago:true}})};
+ const legacyOpts={key:'legacy-seal-key',root,stateless:true,fetcher:async(url,o)=>({ok:true,json:async()=>o.method==='POST'?{ok:true,venda_id:42,pix_code:'legacy-code',status:'pending'}:{ok:true,venda_id:42,valor:103.31,status:'paid',pago:true}})};
  handler=createPayments(legacyOpts);const old=await(await post()).json();handler=createPayments({...legacyOpts,pinpayKey:'new-secret',provider:'pinpay'});const legacy=await(await fetch(base+old.check_status_url)).json();assert.equal(legacy.pago,true);
  console.log('PASS: PinPay cents, metadata, UUID idempotency, QR, confirmed amount, approved/paid, expiry, secret isolation, UTMify/Meta and legacy pending tokens.');
 }finally{server.close();fs.rmSync(root,{recursive:true,force:true})}
