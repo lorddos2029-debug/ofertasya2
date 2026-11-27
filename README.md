@@ -1,16 +1,16 @@
 # Ofertasya
 
-Loja com checkout PIX, etapas de identificação/entrega/pagamento, CEP e fretes.
+Loja com checkout PIX e cartão, etapas de identificação/entrega/pagamento, CEP e fretes.
 
 ## Vercel
 
 Importe este repositório com o preset **Other**, comando de build `npm run build` e diretório de saída `public` (também definidos em vercel.json).
 
-Em **Settings → Environment Variables**, configure `PINPAY_SECRET_KEY` como segredo em **Production** e `PINPAY_PUBLIC_KEY` como configuração, e faça um novo deploy. Nunca inclua a chave no HTML, Git ou variáveis com prefixo público.
+Em **Settings → Environment Variables**, configure `BEEHIVE_SECRET_KEY` como segredo em **Production** e `BEEHIVE_PUBLIC_KEY` como configuração, e faça um novo deploy. Nunca inclua a chave no HTML, Git ou variáveis com prefixo público.
 
 `/api/health` informa a versão e se a variável está configurada, sem expor seu valor.
 
-As rotas `/api/charge`, `/api/status/*`, `/api/qr/*` e `/api/cep/*` são executadas pela função Node da Vercel. O build publica apenas HTML, CSS, JavaScript e imagens da loja. A consulta do PIX e o QR Code utilizam tokens criptografados, permitindo continuar após reinícios das funções sem depender do disco efêmero da Vercel. Preserve as chaves enquanto houver PIX pendentes. A variável `URUSPAY_API_KEY` é mantida no servidor para validar os tokens existentes e consultar PIX anteriores à migração. Novas cobranças usam exclusivamente a PinPay; não há fallback de criação para a UrusPay. Os tokens de consulta expiram após sete dias. O painel PinPay mantém os novos pagamentos; esta versão não oferece um painel persistente de pedidos/endereço para expedição na Vercel.
+As rotas `/api/card/charge`, `/api/payment-config`, `/api/beehive/webhook/*`, `/api/charge`, `/api/status/*`, `/api/qr/*` e `/api/cep/*` são executadas pela função Node da Vercel. O build publica apenas HTML, CSS, JavaScript e imagens da loja. A consulta do PIX e o QR Code utilizam tokens criptografados, permitindo continuar após reinícios das funções sem depender do disco efêmero da Vercel. Preserve as chaves enquanto houver PIX pendentes. A variável `URUSPAY_API_KEY` é mantida no servidor para validar os tokens existentes e consultar PIX anteriores à migração. Novas cobranças PIX e cartão usam exclusivamente a Beehive; não há fallback de criação para as credenciais anteriores. Os tokens de consulta expiram após sete dias. O painel Beehive mantém os novos pagamentos; esta versão não oferece um painel persistente de pedidos/endereço para expedição na Vercel.
 
 ## Local
 
@@ -24,7 +24,7 @@ Copie `.env.example` para `.env` e configure a credencial local. Abra http://loc
     npm test
     npm run build
 
-Os testes usam respostas simuladas e não criam cobranças reais. O preço e o frete são calculados no servidor. O Pixel Purchase só dispara após confirmação e se o Pixel estiver instalado.
+Os testes usam respostas simuladas e não criam cobranças reais. O preço e o frete são calculados no servidor. Os eventos Meta IC e Purchase só disparam após confirmação e se o Pixel estiver instalado.
 
 ## Padrão para novas páginas de produto
 
@@ -34,8 +34,10 @@ Preços e prazos de entrega ficam em `assets/ofertasya/shipping.mjs`, usado na p
 
 Descrições introdutórias ficam na seção `#detalhes`, abaixo do título da seção, e não na área `.purchase`. O módulo compartilhado também move automaticamente `.purchase .intro` para os detalhes em novas páginas que usem o modelo antigo.
 
-## PIX PinPay
+## PIX e cartão Beehive
 
-Documentação: https://hub.usepinpay.com/documentacao . A API do servidor autentica com `PINPAY_SECRET_KEY`, envia valores em centavos para `POST /functions/v1/api-v1/pix` e consulta `GET /functions/v1/api-v1/pix/{id}`. Cada pedido usa `Idempotency-Key` estável e os campos obrigatórios `metadata.external_reference` e `metadata.checkout_url`. O código normaliza `paid`/`approved` para confirmação, confere o valor e mantém QR Code local, UTMify e Meta. A chave pública não é necessária para a chamada PIX server-side e não é inserida no HTML. Não coloque chaves reais nos testes.
+Documentação: https://docs.beehivehub.io/authentication e https://docs.beehivehub.io/api-reference/transactions/create-transaction . A API utiliza Basic Auth com a chave secreta no servidor e valores em centavos. Cada cobrança inclui cliente, itens, endereço, metadados, referência externa estável e postback de confirmação.
 
-Se a PinPay retornar `no_acquirer` (HTTP 422), selecione/habilite uma adquirente PIX na conta PinPay. A autenticação pode funcionar mesmo sem adquirente disponível. O checkout responde 503 sem culpar os dados do comprador; os logs guardam apenas o código e o status, sem chaves nem dados pessoais.
+Cartões são tokenizados exclusivamente no navegador pelo SDK oficial, com 3DS quando disponível. Somente o hash temporário e o número de parcelas chegam ao servidor; número, validade e CVV não fazem parte do payload da loja nem dos tokens de consulta. O cartão usa o preço integral; o desconto de 5% aplica-se apenas ao PIX nos produtos elegíveis.
+
+O webhook utiliza contexto criptografado e consulta a transação autenticada antes de aceitar ID, referência do pedido, método e valor. Somente o status paid confirma o pedido: authorized/processing continuam pendentes. A confirmação atualiza UTMify e Meta, com IDs de evento estáveis para deduplicação. O QR Code é gerado localmente a partir do código retornado pela Beehive. Não coloque credenciais reais nos testes.
