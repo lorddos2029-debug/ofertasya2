@@ -1,6 +1,6 @@
 import {mountFooter} from './footer.mjs';
 import {business} from './business.mjs';
-import {catalog,productFor,validItem} from './catalog.mjs';
+import {storefrontCatalog as catalog,productFor,storefrontItem as validItem} from './catalog.mjs';
 import {icon} from './layout-icons.js';
 const $=s=>document.querySelector(s),money=n=>(n/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 for(const key of ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','fbclid']){const value=new URLSearchParams(location.search).get(key);if(value)sessionStorage.setItem('ofertasya-'+key,value)}

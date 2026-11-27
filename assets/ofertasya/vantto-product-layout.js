@@ -1,5 +1,5 @@
 import {mountFooter} from './footer.mjs';
-import {catalog} from './catalog.mjs';
+import {storefrontCatalog as catalog} from './catalog.mjs';
 import {icon,paymentBrandsMarkup} from './layout-icons.js';
 
 // Vantto presentation with Ofertasya's existing catalog, gallery and checkout behavior.

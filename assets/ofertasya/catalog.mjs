@@ -6,3 +6,7 @@ export const pixUnitPrice=item=>Math.round(productFor(item).price*(100-(productF
 
 
 export const variantId=item=>productFor(item).id+'-'+item.color.toLowerCase()+(item.size?'-'+item.size:'')+(productFor(item).voltages?'-'+item.voltage.toLowerCase():'');
+
+export const removedProducts=['bettdow','camera','capacete','basike'];
+export const storefrontCatalog=Object.fromEntries(Object.entries(catalog).filter(([id])=>!removedProducts.includes(id)));
+export const storefrontItem=item=>validItem(item)&&!removedProducts.includes(item.productId||'bettdow');

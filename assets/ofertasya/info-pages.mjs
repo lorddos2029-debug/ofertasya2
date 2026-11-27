@@ -1,5 +1,5 @@
 import {business,footerGroups} from './business.mjs';
-import {catalog} from './catalog.mjs';
+import {storefrontCatalog as catalog} from './catalog.mjs';
 import {shippingOptions} from './shipping.mjs';
 const email='<a href="mailto:'+business.email+'">'+business.email+'</a>';
 const contact='<div class="info-contact-card"><h2>Fale com a Ofertasya</h2><p><strong>E-mail:</strong> '+email+'</p><p><strong>WhatsApp:</strong> <a href="https://wa.me/'+business.whatsapp+'" target="_blank" rel="noopener noreferrer">'+business.phoneLabel+'</a></p></div>';

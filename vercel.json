@@ -194,5 +194,67 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/relogio",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/relogio/",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/relogio.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/camera",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/camera/",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/camera.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/capacete",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/capacete/",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/capacete.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/basike",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/basike/",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/basike.html",
+      "destination": "/",
+      "permanent": false
+    }
   ]
 }

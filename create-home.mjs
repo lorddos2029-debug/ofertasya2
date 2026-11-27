@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import {catalog,pixUnitPrice} from './assets/ofertasya/catalog.mjs';
+import {storefrontCatalog as catalog,pixUnitPrice} from './assets/ofertasya/catalog.mjs';
 import {icon} from './assets/ofertasya/layout-icons.js';
 const money=n=>(n/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 const escape=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
@@ -10,14 +10,14 @@ head+='<link rel="stylesheet" href="/assets/ofertasya/home.css"><meta property="
 const header=watch.slice(watch.indexOf('<div class="announcement"'),watch.indexOf('<main>')).replaceAll('href="#detalhes"','href="#produtos"').replaceAll('href="#avaliacoes"','href="#produtos"').replaceAll('href="#duvidas"','href="#atendimento"').replace('>O produto<','>Produtos<').replace('>Avaliações<','>Ver ofertas<').replace('>Dúvidas<','>Atendimento<');
 const footer=watch.slice(watch.indexOf('<footer>'),watch.indexOf('</footer>')+9).replaceAll('href="#detalhes"','href="#produtos"').replaceAll('href="#avaliacoes"','href="#produtos"').replaceAll('href="#duvidas"','href="#atendimento"').replace('Sobre o produto','Nossos produtos').replace('>Avaliações<','>Ver ofertas<').replace('>Perguntas frequentes<','>Atendimento<');
 const overlay=watch.slice(watch.indexOf('<div class="overlay"'),watch.indexOf('<dialog'));
-const order=['panela','ventilador','climatizador','basike','robo','travesseiro','bettdow','camera','capacete'];order.push(...Object.keys(catalog).filter(id=>!order.includes(id)));
+const order=['panela','ventilador','climatizador','robo','travesseiro'];order.push(...Object.keys(catalog).filter(id=>!order.includes(id)));
 const cards=order.map((id,index)=>{
  const p=catalog[id],url=id==='bettdow'?'/relogio':'/'+id;
  const productFile=id==='bettdow'?'relogio.html':id+'.html';const source=fs.existsSync(productFile)?fs.readFileSync(productFile,'utf8'):'';
  const ratings=[...source.matchAll(/aria-label="([0-5]) de 5 estrelas"/g)].map(m=>Number(m[1]));
  const average=ratings.length?ratings.reduce((a,b)=>a+b,0)/ratings.length:0;
  const rating=ratings.length?'<div class="home-card-rating"><span aria-hidden="true">★★★★★</span><span>'+average.toFixed(1)+' ('+ratings.length+')</span></div>':'<div class="home-card-rating">Conheça o produto</div>';
- const image=id==='basike'?'/assets/ofertasya/basike-principal.png':p.gallery?.[0]?.src||Object.values(p.images)[0];
+ const image=id==='basike'?'/assets/ofertasya/panela-1.jpg':p.gallery?.[0]?.src||Object.values(p.images)[0];
  return '<a class="home-product-card" href="'+url+'"><div class="home-card-photo"><img src="'+image+'" alt="'+escape(p.shortName)+'" width="400" height="400" loading="'+(index<4?'eager':'lazy')+'" decoding="async">'+(p.pixDiscount?'<span class="home-card-badge">'+p.pixDiscount+'% OFF no PIX</span>':'')+'</div><div class="home-card-info"><h3>'+escape(p.name)+'</h3>'+rating+'<div class="home-card-price"><strong>'+money(p.price)+'</strong>'+(p.pixDiscount?'<p class="home-card-pix">'+money(pixUnitPrice({productId:p.id}))+' no PIX</p>':'')+'<p class="home-card-shipping">Frete grátis</p></div></div></a>';
 }).join('');
 const hero='<a class="home-hero" href="#produtos" aria-label="Conferir produtos da Ofertasya"><div class="home-hero-inner"><div class="home-hero-copy"><span class="home-hero-eyebrow">OFERTASYA · BOAS ESCOLHAS</span><h1>Tudo o que você procura,<br>em um só lugar.</h1><p>Tecnologia, conforto e praticidade<br>para o seu dia a dia.</p><span class="home-hero-cta">Conferir produtos '+icon('arrow',18)+'</span></div><div class="home-hero-products" aria-hidden="true"><div><img src="/assets/ofertasya/robo-1.png" alt="" width="400" height="400"></div><div><img src="/assets/ofertasya/basike-principal.png" alt="" width="500" height="500"></div><div><img src="/assets/ofertasya/travesseiro-1.png" alt="" width="400" height="400"></div></div></div></a>';
