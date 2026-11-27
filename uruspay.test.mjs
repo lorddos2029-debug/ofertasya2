@@ -4,7 +4,7 @@ import os from 'node:os';
 import {createPayments} from './payments.mjs';
 let paid=false,amount=85.41,metaCalls=0,created;
 const options={key:'urus-test-secret',pinpayKey:'old-pinpay-key',provider:'uruspay',root:os.tmpdir(),stateless:true,metaPixelId:'pixel',metaAccessToken:'meta',fetcher:async(url,o={})=>{
- if(url.startsWith('https://graph.facebook')){metaCalls++;return {ok:true}}
+ if(url.startsWith('https://graph.facebook')){metaCalls++;const events=JSON.parse(o.body).data;assert.equal(events.length,1);assert.equal(events[0].event_name,'InitiateCheckout');assert.equal(events[0].event_id,'ev_urus_test_123456_ic');return {ok:true}}
  assert.equal(o.headers.Authorization,'Bearer urus-test-secret');
  if(o.method==='POST'){
   assert.equal(url,'https://uruspaypagamentos.com/api/v1/charge');created=JSON.parse(o.body);
@@ -25,6 +25,6 @@ try{
  assert(!JSON.stringify(charge).includes('urus-test-secret'));assert(charge.check_status_url.startsWith('/api/status/'));
  handler=createPayments(options);assert.equal((await(await fetch(base+charge.check_status_url)).json()).status,'pending');
  paid=true;amount=1;assert.equal((await fetch(base+charge.check_status_url)).status,502);
- amount=85.41;const confirmed=await(await fetch(base+charge.check_status_url)).json();assert.equal(confirmed.pago,true);assert.equal(confirmed.status,'paid');assert.equal(metaCalls,0);
+ amount=85.41;const confirmed=await(await fetch(base+charge.check_status_url)).json();assert.equal(confirmed.pago,true);assert.equal(confirmed.status,'paid');assert.equal(metaCalls,1);
  console.log('PASS: UrusPay auth, server price, tracking, QR URL, restart, paid amount and CAPI deduplication.');
 }finally{server.close()}
