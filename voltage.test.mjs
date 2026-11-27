@@ -32,6 +32,7 @@ try{
   const response=await post([tower],'ev_tower_'+voltage+'_123456',{valor:0.01});assert.equal(response.status,200);assert.equal((await response.json()).valor,85.41);assert.equal(pinpayCalls.at(-1).amount,8541);assert(pinpayCalls.at(-1).description.includes(voltage));assert.equal(trackingCalls.at(-1).products[0].id,'ventilador-branco-'+voltage.toLowerCase());assert(trackingCalls.at(-1).products[0].name.includes(voltage));
  }
  assert.equal(validItem({productId:'ventilador',color:'Branco',quantity:1}),false);
+ for(const voltage of ['110V','220V']){const selected={productId:'panela',color:'Preto',quantity:1,voltage};assert(validItem(selected));const response=await post([selected],'ev_panela_'+voltage+'_123456',{valor:0.01});assert.equal(response.status,200);assert.equal((await response.json()).valor,75.91);assert.equal(pinpayCalls.at(-1).amount,7591);assert.equal(trackingCalls.at(-1).products[0].id,'panela-preto-'+voltage.toLowerCase())}assert.equal(validItem({productId:'panela',color:'Preto',quantity:1}),false);
  const calls=pinpayCalls.length;
  for(const invalid of [item,{...item,voltage:'bivolt'},{...item,voltage:'220'},{...item,voltage:'220V',color:'Preto'}])assert.equal((await post([invalid],'ev_invalid_voltage_123456')).status,400);
  assert.equal(pinpayCalls.length,calls);

@@ -170,6 +170,14 @@
     {
       "source": "/fale-conosco/",
       "destination": "/info-atendimento.html"
+    },
+    {
+      "source": "/panela",
+      "destination": "/panela.html"
+    },
+    {
+      "source": "/panela/",
+      "destination": "/panela.html"
     }
   ],
   "headers": [
