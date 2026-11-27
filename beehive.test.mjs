@@ -35,6 +35,7 @@ try{
  nextStatus='refused';const declined=await post('/api/card/charge',{...cardBody,evento_id:'ev_beehive_declined_123456'});assert.equal(declined.status,402);
  for(const status of ['authorized','processing','partially_paid','waiting_payment'])assert.equal(beehiveStatus(status),'pending');assert.equal(beehiveStatus('paid'),'paid');assert.equal(beehiveStatus('chargedback'),'refunded');
  const denied=createBeehiveClient({key:'secret',fetcher:async()=>({ok:false,status:401,json:async()=>({message:'secret sensitive response'})})});await assert.rejects(()=>denied.status(BEEHIVE_BASE+'/transactions/1'),e=>e.status===503&&!e.message.includes('sensitive'));await assert.rejects(()=>denied.status('https://evil.example/transactions/1'));
+ const unavailable=createBeehiveClient({key:'secret',fetcher:async()=>({ok:false,status:424,json:async()=>({message:'internal acquirer details'})})});await assert.rejects(()=>unavailable.status(BEEHIVE_BASE+'/transactions/1'),e=>e.status===503&&e.message.includes('temporariamente indisponível')&&!e.message.includes('Confira os dados')&&!e.message.includes('internal'));
  assert(validCard({number:'4111111111111111',holderName:'Teste Comprador',expMonth:12,expYear:new Date().getFullYear()+1,cvv:'123'}));assert(!validCard({number:'4111111111111112',holderName:'Teste Comprador',expMonth:12,expYear:2030,cvv:'123'}));
  console.log('PASS: Beehive PIX/card, token-only payload, server pricing, auth, QR, pending/paid, verified webhooks and tracking.');
 }finally{await new Promise(r=>server.close(r))}

@@ -14,7 +14,7 @@ export function createBeehiveClient({key,fetcher=fetch}){
   if(!new RegExp('^'+BEEHIVE_BASE.replaceAll('.','\\.')+'/transactions(?:/[0-9]+)?$').test(url))throw fail('Consulta de pagamento inválida.',400);
   let response;try{response=await fetcher(url,{...options,redirect:'error',headers:{...options.headers,Authorization:'Basic '+Buffer.from(key+':x').toString('base64'),'Content-Type':'application/json'},signal:AbortSignal.timeout(20000)})}catch{throw fail('Não foi possível confirmar a resposta do pagamento. Aguarde e verifique o pedido antes de tentar novamente.')}
   let data;try{data=await response.json()}catch{throw fail('O serviço de pagamento retornou uma resposta inválida.')}
-  if(!response.ok){console.warn('[Beehive] Requisição recusada',{http:response.status});throw fail(response.status===401||response.status===403?'Pagamento temporariamente indisponível. Entre em contato com a loja.':'Não foi possível concluir o pagamento. Confira os dados ou tente outra forma de pagamento.',response.status===401||response.status===403?503:502)}
+  if(!response.ok){const unavailable=[401,403,424].includes(response.status);console.warn('[Beehive] Requisição recusada',{http:response.status,...(response.status===424?{code:'acquirer_unavailable'}:{})});throw fail(unavailable?'O serviço de pagamento está temporariamente indisponível nesta loja. Tente novamente mais tarde ou entre em contato com o suporte.':'Não foi possível concluir o pagamento. Confira os dados ou tente outra forma de pagamento.',unavailable?503:502)}
   return normalizeBeehive(data);
  }
  return {async create(p){
