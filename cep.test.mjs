@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {createCepLookup} from './cep.mjs';
+const cep='01001000',address={cep,state:'SP',city:'São Paulo',street:'Praça da Sé',neighborhood:'Sé'};
+let calls=0;const lookup=createCepLookup({fetcher:async url=>{calls++;if(url.includes('viacep'))throw Error('ViaCEP unavailable');return {ok:true,status:200,json:async()=>address}}});
+const [a,b]=await Promise.all([lookup(cep),lookup(cep)]);assert.deepEqual(a,b);assert.equal(a.cep,'01001-000');assert.equal(a.logradouro,'Praça da Sé');assert.equal(a.localidade,'São Paulo');assert.equal(calls,2);await lookup(cep);assert.equal(calls,2);
+await assert.rejects(()=>lookup('01001-000'),e=>e.status===400);assert.equal(calls,2);
+const via=createCepLookup({fetcher:async url=>url.includes('brasilapi')?Promise.reject(Error('BrasilAPI unavailable')):{ok:true,status:200,json:async()=>({cep:'01001-000',logradouro:'Praça da Sé',bairro:'Sé',localidade:'São Paulo',uf:'SP'})}});assert.equal((await via(cep)).uf,'SP');
+const missing=createCepLookup({fetcher:async url=>({ok:url.includes('viacep'),status:url.includes('viacep')?200:404,json:async()=>({erro:'true'})})});await assert.rejects(()=>missing(cep),e=>e.status===404);
+let aborted=false;const fast=createCepLookup({fetcher:async(url,{signal})=>{if(url.includes('brasilapi'))return {ok:true,status:200,json:async()=>address};return new Promise((resolve,reject)=>signal.addEventListener('abort',()=>{aborted=true;reject(Error('aborted'))},{once:true}))}});assert.equal((await fast(cep)).localidade,'São Paulo');assert(aborted);
+const down=createCepLookup({timeoutMs:10,fetcher:async(url,{signal})=>new Promise((resolve,reject)=>signal.addEventListener('abort',()=>reject(Error('timeout')),{once:true}))});const start=Date.now();await assert.rejects(()=>down(cep),e=>e.status===503&&e.message.includes('manualmente'));assert(Date.now()-start<500);
+let count=0;const retry=createCepLookup({fetcher:async()=>{count++;throw Error('down')}});await assert.rejects(()=>retry(cep));await assert.rejects(()=>retry(cep));assert.equal(count,4);
+const mismatched=createCepLookup({fetcher:async()=>({ok:true,status:200,json:async()=>({...address,cep:'20000000'})})});await assert.rejects(()=>mismatched(cep),e=>e.status===503);
+console.log('PASS: parallel CEP providers, fallback, timeout, invalid/not found, cache, concurrent requests and response matching.');
