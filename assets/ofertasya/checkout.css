@@ -20,3 +20,5 @@ input:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #f582
 #card-fields{padding-top:8px}#card-fields select{display:block;width:100%;min-height:50px;padding:12px 14px;margin-top:6px;border:1px solid var(--checkout-border);border-radius:5px;background:#fff;font:16px Inter,Arial,sans-serif;color:var(--checkout-ink)}
 
 @keyframes payment-confirmed{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}.success:not([hidden]){animation:payment-confirmed .4s ease-out}@media(prefers-reduced-motion:reduce){.success:not([hidden]){animation:none}}
+
+#pix #check{display:flex;align-items:center;justify-content:center;gap:8px;width:min(100%,300px);min-height:48px;margin:20px auto 24px;padding:13px 20px;border:1px solid #f58200;border-radius:10px;background:#fff7ed;color:#a84f00;font:600 14px/1.4 Poppins,Arial,sans-serif;text-align:center;text-decoration:none;cursor:pointer;box-shadow:0 2px 6px #0000000a;transition:background .15s,box-shadow .15s}#pix #check:hover{background:#ffedd5;box-shadow:0 3px 10px #00000012}#pix #check:focus-visible{outline:3px solid #f58200;outline-offset:3px}#pix #check:active{background:#fed7aa}
