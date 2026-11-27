@@ -178,6 +178,14 @@
     {
       "source": "/panela/",
       "destination": "/panela.html"
+    },
+    {
+      "source": "/purificador",
+      "destination": "/purificador.html"
+    },
+    {
+      "source": "/purificador/",
+      "destination": "/purificador.html"
     }
   ],
   "headers": [

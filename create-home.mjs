@@ -10,7 +10,7 @@ head+='<link rel="stylesheet" href="/assets/ofertasya/home.css"><meta property="
 const header=watch.slice(watch.indexOf('<div class="announcement"'),watch.indexOf('<main>')).replaceAll('href="#detalhes"','href="#produtos"').replaceAll('href="#avaliacoes"','href="#produtos"').replaceAll('href="#duvidas"','href="#atendimento"').replace('>O produto<','>Produtos<').replace('>Avaliações<','>Ver ofertas<').replace('>Dúvidas<','>Atendimento<');
 const footer=watch.slice(watch.indexOf('<footer>'),watch.indexOf('</footer>')+9).replaceAll('href="#detalhes"','href="#produtos"').replaceAll('href="#avaliacoes"','href="#produtos"').replaceAll('href="#duvidas"','href="#atendimento"').replace('Sobre o produto','Nossos produtos').replace('>Avaliações<','>Ver ofertas<').replace('>Perguntas frequentes<','>Atendimento<');
 const overlay=watch.slice(watch.indexOf('<div class="overlay"'),watch.indexOf('<dialog'));
-const order=['panela','ventilador','climatizador','robo','travesseiro'];order.push(...Object.keys(catalog).filter(id=>!order.includes(id)));
+const order=['purificador','panela','ventilador','climatizador','robo','travesseiro'];order.push(...Object.keys(catalog).filter(id=>!order.includes(id)));
 const cards=order.map((id,index)=>{
  const p=catalog[id],url=id==='bettdow'?'/relogio':'/'+id;
  const productFile=id==='bettdow'?'relogio.html':id+'.html';const source=fs.existsSync(productFile)?fs.readFileSync(productFile,'utf8'):'';
