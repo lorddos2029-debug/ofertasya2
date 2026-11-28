@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 import os from 'node:os';
 import {createPayments} from './payments.mjs';
-import {createBeehiveClient,BEEHIVE_BASE,beehiveStatus} from './beehive.mjs';
+import {createBeehiveClient,BEEHIVE_BASE,beehiveStatus,beehiveFailure} from './beehive.mjs';
+import {normalizePhone,validPhone,formatPhone} from './assets/ofertasya/phone.mjs';
 import {validCard} from './assets/ofertasya/beehive-card.mjs';
 let calls=0,nextStatus='waiting_payment',wrongAmount=false,lastPayload,lastHeaders;
 const transactions=new Map(),meta=[],utm=[];
@@ -22,6 +23,10 @@ const body={nome:'Comprador Teste',email:'teste@example.com',cpf:'52998224725',t
 const post=(route,b)=>fetch(base+route,{method:'POST',headers:{'Content-Type':'application/json','X-Forwarded-For':'189.10.20.30'},body:JSON.stringify(b)});
 try{
  const config=await(await fetch(base+'/api/payment-config')).json();assert.equal(config.card_enabled,true);assert.equal(config.public_key,'pk-test');assert(!JSON.stringify(config).includes('bee-secret'));
+ for(const telefone of ['', '999999999', '00999999999'])assert.equal((await post('/api/charge',{...body,telefone})).status,400);assert.equal(calls,0);
+ assert.equal(normalizePhone('+55 (11) 99999-9999'),'11999999999');assert(validPhone('+55 (11) 99999-9999'));assert(validPhone('1133334444'));assert(!validPhone('20999999999'));assert.equal(formatPhone('11999999999'),'(11) 99999-9999');
+ const nested=beehiveFailure({message:JSON.stringify({message:'Informe um número de telefone válido com DDD'})},424);assert.equal(nested.code,'invalid_phone');assert.equal(nested.error.status,400);assert(nested.error.message.includes('telefone'));assert(!nested.error.message.includes('indisponível'));
+ assert.equal(beehiveFailure({message:JSON.stringify({message:'Valor da compra menor que as taxas aplicáveis'})},424).code,'amount_below_fees');
  const r=await post('/api/charge',body),pix=await r.json();assert.equal(r.status,200);assert.equal(pix.valor,93.81);assert.equal(pix.payment_method,'pix');assert.equal(pix.pix_code,'000201-pix-test');assert.equal(lastPayload.amount,9381);assert.equal(lastPayload.shipping.fee,1790);assert.equal(lastPayload.items[0].unitPrice,7591);assert.equal(lastPayload.customer.document.number,body.cpf);assert.equal(lastPayload.ip,'189.10.20.30');assert.equal(lastPayload.metadata.shop_url,'https://www.ofertasyaloja.online');assert.equal(lastPayload.externalRef,body.evento_id);assert(lastHeaders['Idempotency-Key']);assert(lastPayload.postbackUrl.startsWith('https://www.ofertasyaloja.online/api/beehive/webhook/'));const callback=new URL(lastPayload.postbackUrl).pathname;assert(!lastPayload.postbackUrl.includes(body.email));assert(!JSON.stringify(pix).includes('bee-secret'));assert.equal(meta.length,0);
  await post('/api/charge',body);assert.equal(calls,1);handler=createPayments(options);
  const qr=await fetch(base+pix.check_status_url.replace('/api/status/','/api/qr/'));assert.equal(qr.headers.get('content-type'),'image/png');

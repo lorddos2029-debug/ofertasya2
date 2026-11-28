@@ -14,7 +14,7 @@ export function initCheckoutLayout(){
  for(const button of document.querySelectorAll('[data-step]')){const [symbol,label]=labels[button.dataset.step];button.innerHTML='<b>'+icon(symbol,20)+'</b><span>'+label+'</span>'}
  const title=$('#step-identification h2');title.innerHTML='<span class="number">1</span>'+icon('user',16)+'Informações pessoais';$('#step-shipping h2').innerHTML='<span class="number">2</span>'+icon('pin',16)+'Entrega';$('#step-payment h2').innerHTML='<span class="number">3</span>'+icon('card',16)+'Pagamento';
  $('#identity-next').innerHTML='Ir para entrega '+icon('arrow',18);$('#shipping-next').innerHTML='Ir para pagamento '+icon('arrow',18);
- const phone=document.createElement('label');phone.htmlFor='phone';phone.innerHTML='Celular / WhatsApp <span class="optional">(opcional)</span><input id="phone" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="(11) 99999-9999" maxlength="16">';
+ const phone=document.createElement('label');phone.htmlFor='phone';phone.innerHTML='Celular / WhatsApp com DDD<input id="phone" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="(11) 99999-9999" maxlength="20" required>';
  const cpfLabel=$('#cpf').closest('label'),row=document.createElement('div');row.className='field-row';cpfLabel.before(row);row.append(cpfLabel,phone);
  const note=document.createElement('p');note.className='checkout-reassurance';note.innerHTML=icon('shield',16)+' Ofertasya · Boas escolhas para o seu dia a dia';panel.append(note);
  $('#summary-toggle').innerHTML='<span class="summary-heading-label">'+icon('bag',19)+' Resumo do pedido '+icon('chevron',15)+'</span><span id="summary-header-total"></span><span class="summary-toggle" aria-hidden="true">+</span>';

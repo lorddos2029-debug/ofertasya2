@@ -1,16 +1,16 @@
 # Ofertasya
 
-Loja com checkout PIX, etapas de identificação/entrega/pagamento, CEP e fretes.
+Loja com checkout PIX e cartão, etapas de identificação/entrega/pagamento, CEP e fretes.
 
 ## Vercel
 
 Importe este repositório com o preset **Other**, comando de build `npm run build` e diretório de saída `public` (também definidos em vercel.json).
 
-Em **Settings → Environment Variables**, configure `URUSPAY_API_KEY` como segredo em **Production**, e faça um novo deploy. Nunca inclua a chave no HTML, Git ou variáveis com prefixo público.
+Em **Settings → Environment Variables**, configure `BEEHIVE_SECRET_KEY` como segredo em **Production** e `BEEHIVE_PUBLIC_KEY` como configuração, e faça um novo deploy. Nunca inclua a chave no HTML, Git ou variáveis com prefixo público.
 
 `/api/health` informa a versão e se a variável está configurada, sem expor seu valor.
 
-As rotas `/api/card/charge`, `/api/payment-config`, `/api/beehive/webhook/*`, `/api/charge`, `/api/status/*`, `/api/qr/*` e `/api/cep/*` são executadas pela função Node da Vercel. O build publica apenas HTML, CSS, JavaScript e imagens da loja. A consulta do PIX e o QR Code utilizam tokens criptografados, permitindo continuar após reinícios das funções sem depender do disco efêmero da Vercel. Preserve as chaves enquanto houver PIX pendentes. A variável `URUSPAY_API_KEY` é mantida no servidor para validar os tokens existentes e consultar PIX anteriores à migração. Novas cobranças PIX usam exclusivamente a UrusPay. Cartão não gera cobranças nesta configuração. As credenciais Beehive/PinPay são preservadas apenas para consultar pagamentos anteriores. Os tokens de consulta expiram após sete dias. O painel UrusPay mantém os novos pagamentos; esta versão não oferece um painel persistente de pedidos/endereço para expedição na Vercel.
+As rotas `/api/card/charge`, `/api/payment-config`, `/api/beehive/webhook/*`, `/api/charge`, `/api/status/*`, `/api/qr/*` e `/api/cep/*` são executadas pela função Node da Vercel. O build publica apenas HTML, CSS, JavaScript e imagens da loja. A consulta do PIX e o QR Code utilizam tokens criptografados, permitindo continuar após reinícios das funções sem depender do disco efêmero da Vercel. Preserve as chaves enquanto houver PIX pendentes. A variável `URUSPAY_API_KEY` é mantida no servidor para validar os tokens existentes e consultar PIX anteriores à migração. Novas cobranças PIX e cartão usam exclusivamente a Beehive; não há fallback de criação para as credenciais anteriores. Os tokens de consulta expiram após sete dias. O painel Beehive mantém os novos pagamentos; esta versão não oferece um painel persistente de pedidos/endereço para expedição na Vercel.
 
 ## Local
 
@@ -34,6 +34,10 @@ Preços e prazos de entrega ficam em `assets/ofertasya/shipping.mjs`, usado na p
 
 Descrições introdutórias ficam na seção `#detalhes`, abaixo do título da seção, e não na área `.purchase`. O módulo compartilhado também move automaticamente `.purchase .intro` para os detalhes em novas páginas que usem o modelo antigo.
 
-## PIX UrusPay
+## PIX e cartão Beehive
 
-O servidor autentica com URUSPAY_API_KEY para criar cobranças em https://uruspaypagamentos.com/api/v1/charge e consultar o status autenticado. QR Code, copia-e-cola, desconto de PIX, frete, rastreamento e eventos Meta após pagamento confirmado são mantidos. O navegador não recebe a chave secreta. A opção de cartão mantém o comportamento anterior à integração Beehive: informa indisponibilidade ao tentar finalizar, sem transmitir dados do cartão.
+Documentação: https://docs.beehivehub.io/authentication e https://docs.beehivehub.io/api-reference/transactions/create-transaction . A API utiliza Basic Auth com a chave secreta no servidor e valores em centavos. Cada cobrança inclui cliente com telefone obrigatório e DDD, itens, endereço, metadados, referência externa estável e postback de confirmação. A Beehive pode retornar HTTP 424 com uma mensagem JSON aninhada para validações da adquirente; o status isolado não identifica ausência de adquirente.
+
+Cartões são tokenizados exclusivamente no navegador pelo SDK oficial, com 3DS quando disponível. Somente o hash temporário e o número de parcelas chegam ao servidor; número, validade e CVV não fazem parte do payload da loja nem dos tokens de consulta. O cartão usa o preço integral; o desconto de 5% aplica-se apenas ao PIX nos produtos elegíveis.
+
+O webhook utiliza contexto criptografado e consulta a transação autenticada antes de aceitar ID, referência do pedido, método e valor. Somente o status paid confirma o pedido: authorized/processing continuam pendentes. A confirmação atualiza UTMify e Meta, com IDs de evento estáveis para deduplicação. O QR Code é gerado localmente a partir do código retornado pela Beehive. Não coloque credenciais reais nos testes.
