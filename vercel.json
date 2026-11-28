@@ -186,6 +186,14 @@
     {
       "source": "/purificador/",
       "destination": "/purificador.html"
+    },
+    {
+      "source": "/coluna",
+      "destination": "/coluna.html"
+    },
+    {
+      "source": "/coluna/",
+      "destination": "/coluna.html"
     }
   ],
   "headers": [
